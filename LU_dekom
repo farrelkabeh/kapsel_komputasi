@@ -1,0 +1,35 @@
+function LUdekom(A, n) {
+    let L = Array.from({ length: n }, (_, i) => Array(n).fill(0));
+    let U = JSON.parse(JSON.stringify(A)); // Deep copy of A
+    
+    // Misalkan L merupakan matriks identitas
+    for (let i = 0; i < n; i++) {
+        L[i][i] = 1;
+    }
+
+    // Dekomposisi LU
+    for (let k = 0; k < n - 1; k++) {
+        for (let i = k + 1; i < n; i++) {
+            let faktor = U[i][k] / U[k][k];
+            for (let j = k; j < n; j++) {
+                U[i][j] -= faktor * U[k][j]; // Perbarui U
+            }
+            L[i][k] = faktor; // Perbarui L
+        }
+    }
+
+    console.log('L =');
+    console.log(L);
+    console.log('U =');
+    console.log(U);
+}
+
+// Contoh
+const n = 4;
+const A = [
+    [2, 3, 0, 1],
+    [6, 3, 9, -5],
+    [4, 2, 5, 2],
+    [2, -1, 4, 3]
+];
+LUdekom(A, n);
