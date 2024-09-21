@@ -55,7 +55,7 @@ function LUdekom(A) {
                 const faktor = U[i][k] / U[k][k];
                 L[i][k] = faktor; // Calculate the factor for L
                 for (let j = k; j < n; j++) {
-                    U[i][j] -= faktor * U[k][j]; // Update U
+                    U[i][j] -= faktor * U[k][j]; // Perbarui matriks U
                 }
             }
         }
@@ -70,7 +70,7 @@ function LUdekom(A) {
     console.table(LU);
 }
 
-// Example usage
+// Contoh
 const A = [
     [2, 1, 3],
     [1, 3, 2],
