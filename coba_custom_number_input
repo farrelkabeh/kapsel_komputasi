@@ -1,0 +1,48 @@
+// css
+// custom nummber input fields
+
+<div class="custom-num" >
+  <i class="fas fa-angle-up arr-up"></i>
+  < input
+    type="number"
+    class="num-input"
+    min="0" max="10" value="0"
+    data-color="#21d99b"
+  />
+  <i class="fas fa-angle-down arr-down"></i>
+</div>
+body {
+  background: #1b1c23;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+｝
+.custom-num {
+  margin: 1em;
+  color: #fff;
+  display: flex;
+  width: 3em;
+  height: 7em;
+  border: 1px #fff solid;
+  border-radius: 3em;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  transition: 0.3s;
+}
+.num-input:: -webkit-outer-spin-button,
+.num-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.num-input {
+  font-size: 1.5em;
+  text-align: center;
+  background: none;
+  border: none;
+  color: #21d99b;
+  font-weight: bold;
+  width: 100%;
+}
