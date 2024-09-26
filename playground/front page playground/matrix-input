@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Input</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<!-- <h2>Create an n x n Matrix</h2> -->
+
+<label for="size">Ordo matriks (2–5): </label>
+<input type="number" id="size" min="2" max="5">
+<button onclick="generateMatrix()">Buat Matriks</button>
+
+<div id="matrixContainer"></div>
+
+<script>
+function generateMatrix() {
+    const size = parseInt(document.getElementById('size').value);
+    const container = document.getElementById('matrixContainer');
+    container.innerHTML = ''; // Hapus matrix sebelumnya
+
+    if (size < 2 || size > 5 || isNaN(size)) {
+        alert('Ordo matriks harus di antara 2–5 .');
+        return;
+    }
+
+    // HTML untuk matriks
+    const table = document.createElement('table');
+    for (let i = 0; i < size; i++) {
+        const row = document.createElement('tr');
+        for (let j = 0; j < size; j++) {
+            const cell = document.createElement('td');
+            const input = document.createElement('input');
+            input.type = 'text'; // Change type to 'text' for custom validation
+            input.placeholder = `a[${i}][${j}]`;
+            input.pattern = '-?[0-9]*\\.?[0-9]*'; // Bilangan real yang dikehendaki
+
+            // Hanya boleh angka, bilangan negatif, atau desimal
+            input.onkeydown = function(event) {
+                const allowedKeys = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Delete', 'Enter', '.', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+                if (!allowedKeys.includes(event.key) && !event.key.match(/[0-9.-]/)) {
+                    event.preventDefault();
+                }
+            };
+
+            cell.appendChild(input);
+            row.appendChild(cell);
+        }
+        table.appendChild(row);
+    }
+    container.appendChild(table);
+
+    // Tombol "submit"
+    const submitButton = document.createElement('button');
+    submitButton.innerText = 'Submit Matrix';
+    submitButton.onclick = function() {
+        const matrix = [];
+        for (let i = 0; i < size; i++) {
+            const row = [];
+            const inputs = table.rows[i].getElementsByTagName('input');
+            for (let j = 0; j < size; j++) {
+                const value = parseFloat(inputs[j].value);
+                if (isNaN(value)) {
+                    alert('Mohon masukkan entri bilangan real pada matriks.');
+                    return;
+                }
+                row.push(value);
+            }
+            matrix.push(row);
+        }
+        console.log('Matrix:', matrix);
+        alert('Matriks telah dibuat. Periksa console untuk keluaran.');
+    };
+    container.appendChild(submitButton);
+}
+</script>
+
+</body>
+</html>
