@@ -121,9 +121,9 @@ function LUdekom(A) {
     );
     const U = A.map(row => row.map(value => fraction(value)));
 
-    if (n !== A[0].length) {
-        throw new TypeError('Matriks yang diberikan bukan matriks persegi.');
-    }
+    // if (n !== A[0].length) {
+    //     throw new TypeError('Matriks yang diberikan bukan matriks persegi.');
+    // }
     
     // LU Decomposition Logic
     function deter(B, peng = 1) { // Fungsi determinan dengan rekursif (kofaktor)
