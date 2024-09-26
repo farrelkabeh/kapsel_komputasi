@@ -15,22 +15,29 @@
         <div class="toggle-btn">Kalkulator Dekomposisi LU</div>
 
         <div class="card">
-            
-
             <aside>
                 <header>
                     <div class="prompt">
-                        <label for="size">Ordo matriks: </label>
+                        <label for="size">Ordo :</label>
                         <input id="size" type="number" min="2" max="5">
                     </div>
                     <button class="set-ordo" onclick="generateMatrix()">Buat Matriks</button>
-                    <div id="matrixContainer"></div>
+                    <div class="v-line"></div>
                 </header>
 
                 <div class="content">
-                    <!-- Content goes here -->
+                    <div id="matrixContainer"></div>
                 </div>
             </aside>
+        </div>
+
+        <div class="card result">
+            <div class="close-btn">
+            </div>
+            <div class="matrix-box matrix-C">
+                <label for="">Hasil</label>
+                <div class="matrix-input"></div>
+            </div>
         </div>
     </section>
 
