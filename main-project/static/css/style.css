@@ -1,0 +1,73 @@
+:root {
+    --main-font: 'Work Sans', sans-serif, serif;
+    --primary-color: #F9F9FB;
+    --secondary-color: #f0f0f4 ;
+    --main-padding: 3rem;
+    --sidebar-width: 200px;
+    --navbar-height: 60px;
+    --primary-font-color: #000c1c;
+    --secondary-font-color: #89878b;
+}
+
+aside {
+    grid-area: aside;
+    background-color: var(--primary-color);
+    z-index: 1000;
+    
+}
+
+nav {
+    grid-area: nav;
+    box-shadow: 0 3px 6px 0px rgba(0,0,0,0.05);
+    z-index: 999;
+}
+
+main {
+    grid-area: main;
+    background-color: white;
+}
+
+body {
+    font-family: var(--main-font);
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 4fr;
+    grid-template-rows: var(--navbar-height) 4fr;
+    grid-template-areas: 
+    "   aside       nav   "
+    "   aside       main   "
+    ;
+}
+
+/* Sidebar Section */
+.sidebar {
+    border-right: 1px solid var(--secondary-color);
+}
+
+
+/* Navbar Section */
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    color: var(--secondary-font-color);
+    padding: 0 2rem;
+}
+
+.navbar-container > * {
+    padding: 0;
+    margin: 0;
+}
+
+.navbar-container h6 {
+    margin: 0;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.navbar-container h6 i {
+    padding-right: 0.5rem;
+}
