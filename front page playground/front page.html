@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decomposition Matrix Calculator</title>
+    <link rel="stylesheet" href="front page.css">
+</head>
+<body>
+
+    <div class="page1" id="page1">
+        <div class="kiri">
+            <h1>Decomposition Matrix Calculator</h1>
+        </div>
+
+        <div class="garis"></div>
+
+        <div class="kanan">
+            <div class="buttons">
+                <button id="instructionBtn">How to Use</button>
+                <button id="startBtn">Start</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="page2 hidden" id="page2">
+
+        <div class="judulp2">
+            <h1>How to Use</h1>
+        </div>
+
+        <div class="instructions">
+            <p>Selamat datang di Decomposition Matrix Calculator!</p>
+            <p>Untuk menggunakan kalkulator ini, lakukan langkah berikut:</p>
+            <ul>
+                <li>Pilih ukuran matriks yang diinginkan.</li>
+                <li>Masukkan angka yang ingin anda dekomposisi.</li>
+                <li>Kalkulator akan mengeluarkan dekomposisi matriks LU yang diinginkan.</li>
+            </ul>
+            <p>Selamat mencoba dekomposisi matriks!</p>
+        </div>
+
+        <div class="startbutton">
+            <button id="startBtn2">Start</button>
+        </div>
+    </div>
+
+    <script>
+        const instructionBtn = document.getElementById('instructionBtn');
+        const startBtn = document.getElementById('startBtn');
+        const homePage = document.getElementById('page1');
+        const instructionPage = document.getElementById('page2');
+
+        instructionBtn.addEventListener('click', () => {
+            homePage.classList.add('hidden');
+            instructionPage.classList.remove('hidden');
+        });
+    </script>
+
+</body>
+</html>
