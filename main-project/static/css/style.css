@@ -71,3 +71,23 @@ body {
 .navbar-container h6 i {
     padding-right: 0.5rem;
 }
+
+/* Overall responsiveness */
+
+@media (max-width: 42.5rem) {
+    aside {
+        display: none;
+    }
+    body {
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: var(--navbar-height) auto;
+        grid-template-areas: 
+        "   nav   "
+        "   main   "
+        ;
+    }
+    nav {
+        width: 100%;
+    }
+}
