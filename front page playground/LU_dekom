@@ -1,0 +1,84 @@
+// javascript
+
+function LUdekom(A) {
+    const n = A.length;
+    const L = Array.from({ length: n }, (_, i) => Array(n).fill(0).map((_, j) => (i === j ? 1 : 0))); // matriks identitas
+    const U = A.map(row => [...row]); // salinan matriks A
+
+    if (n !== A[0].length) {
+        throw new Error('Matriks yang diberikan bukan matriks persegi.');
+    }
+
+    function deter(B, peng = 1) { // fungsi determinan
+        const ukuran = B.length;
+        if (ukuran === 1) {
+            return peng * B[0][0];
+        } else {
+            let tanda = -1;
+            let jawab = 0;
+            for (let i = 0; i < ukuran; i++) {
+                const boneka = [];
+                for (let j = 1; j < ukuran; j++) {
+                    const tamb = [];
+                    for (let k = 0; k < ukuran; k++) {
+                        if (k !== i) {
+                            tamb.push(B[j][k]);
+                        }
+                    }
+                    boneka.push(tamb);
+                }
+                tanda *= -1;
+                jawab += peng * deter(boneka, tanda * B[0][i]);
+            }
+            return jawab;
+        }
+    }
+
+    function detsub(A) { // fungsi untuk minor utama terdepan
+        const boneka = new Array(A.length).fill(0);
+        for (let l = 0; l < A.length; l++) {
+            const submatriks = A.slice(0, l + 1).map(row => row.slice(0, l + 1));
+            boneka[l] = deter(submatriks);
+        }
+        return boneka;
+    }
+
+    function cekdetsub_lu(X) { // fungsi untuk uji minor utama terdepan taknol (syarat dekomposisi LU)
+        return detsub(X).some(d => d === 0) ? 1 : 0;
+    }
+
+    if (cekdetsub_lu(A) === 1) {
+        throw new Error("Matriks tidak dapat didekomposisi LU. Ada minor utama terdepan dari matriks yang nol.");
+    } else {
+        for (let k = 0; k < n - 1; k++) {
+            for (let i = k + 1; i < n; i++) {
+                const faktor = U[i][k] / U[k][k];
+                L[i][k] = faktor; // Calculate the factor for L
+                for (let j = k; j < n; j++) {
+                    U[i][j] -= faktor * U[k][j]; // Perbarui matriks U
+                }
+            }
+        }
+    }
+
+    console.log('L =');
+    console.table(L);
+    console.log('U =');
+    console.table(U);
+    console.log('LU =');
+    const LU = L.map((row, i) => row.map((_, j) => row.reduce((sum, _, k) => sum + row[k] * U[k][j], 0)));
+    console.table(LU);
+}
+
+// Contoh
+const A = [
+    [2, 1, 3],
+    [1, 3, 2],
+    [3, 2, 4]
+];
+
+console.log('1. Misalkan matriks', A.length, 'x', A[0].length);
+console.log('A =');
+console.table(A);
+console.log('Dekomposisi LU dari A adalah');
+LUdekom(A);
