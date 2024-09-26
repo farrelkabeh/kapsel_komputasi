@@ -124,8 +124,50 @@ function LUdekom(A) {
     if (n !== A[0].length) {
         throw new TypeError('Matriks yang diberikan bukan matriks persegi.');
     }
+    else {
+        function deter(B, peng = 1) { // Fungsi determinan dengan rekursif (kofaktor)
+            const ukuran = B.length;
+            if (ukuran === 1) {
+                return peng * B[0][0];
+            } else {
+                let tanda = -1;
+                let jawab = 0;
+                for (let i = 0; i < ukuran; i++) {
+                    const boneka = [];
+                    for (let j = 1; j < ukuran; j++) {
+                        const tamb = [];
+                        for (let k = 0; k < ukuran; k++) {
+                            if (k !== i) {
+                                tamb.push(B[j][k]);
+                            }
+                        }
+                        boneka.push(tamb);
+                    }
+                    tanda *= -1;
+                    jawab += peng * tanda * B[0][i] * deter(boneka);
+                }
+                return jawab;
+            }
+        }
 
+        function detsub(A) { // Fungsi minor utama terdepan
+            const boneka = new Array(A.length).fill(0); // Array untuk entri-entri rasional
+            for (let l = 0; l < A.length; l++) {
+                const submatriks = A.slice(0, l + 1).map(row => row.slice(0, l + 1));
+                boneka[l] = deter(submatriks);
+            }
+            return boneka;
+        }
+
+        function cekdetsub_lu(X) { // Fungsi untuk memeriksa apakah minor utama terdepan nol atau tidak
+            return detsub(X).some(value => value === 0) ? 1 : 0;
+        }
+
+        if (cekdetsub_lu(A) === 1) {
+            throw new TypeError("Matriks tidak dapat didekomposisi LU. Ada minor utama terdepan dari matriks yang nol.");
+        } else {
     // LU Decomposition Logic
+    
     for (let k = 0; k < n - 1; k++) {
         for (let i = k + 1; i < n; i++) {
             const faktor = U[i][k].div(U[k][k]);
