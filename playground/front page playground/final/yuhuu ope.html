@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Dekomposisi LU</title>
+    <link rel="stylesheet" href="style ope.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.3.0/math.min.js"></script>
+</head>
+<body>
+
+    <header class="app-header">
+        <h1>Decomposition Matrix Calculator</h1>
+        <button class="help-btn" onclick="navigateToHelp()">?</button>
+        <button class="whatsapp-btn" onclick="window.open('https://wa.me/1234567890?text=Hi%20there!%20I%20have%20a%20question%20about%20your%20services.', '_blank')">Kontak Kami</button>
+        <!-- nnti mskin wa mas aris-->
+        <script>
+            function navigateToHelp() {
+                window.location.href = 'help.html';
+            }
+        </script>
+    </header>
+
+    <aside class="side-panel">
+        <nav>
+            <ul>
+                <li><a href="#">Kalkulator</a></li>
+                <li><a href="#">History</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <section class="page">
+        <div class="card">
+            <aside>
+                <header>
+                    <div class="prompt">
+                        <label for="size">Ordo :</label>
+                        <input id="size" type="number" min="2" max="5" />
+                    </div>
+                    <button class="set-ordo" onclick="generateMatrix()">Buat Matriks</button>
+                    <div class="v-line"></div>
+                </header>
+                <div class="content">
+                    <div id="matrixContainer"></div>
+                </div>
+            </aside>
+        </div>
+
+     <script src="LU ope.js"></script>
+</body>
+</html>
