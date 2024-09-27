@@ -1,39 +1,10 @@
-/* Perbaikan pada card hasil */
-.card.result {
-    display: flex;
-    flex-direction: column; /* Atur layout vertikal */
-    justify-content: center; /* Posisi konten di tengah */
-    align-items: center;
-    width: 400px; /* Sesuaikan ukuran */
-    height: auto; /* Otomatis menyesuaikan tinggi */
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 24px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-    color: #ffffff;
-    margin-top: 20px; /* Beri jarak dari card lain */
-}
-
-.matrix-box {
-    margin-top: 10px;
-    text-align: center; /* Teks label dan hasil di tengah */
-}
-
-.matrix-input {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.matrix-box table {
-    border-collapse: collapse;
-}
-
-.matrix-box table td {
-    border: 1px solid #ff9800;
-    padding: 10px;
-    text-align: center;
-    font-size: 16px;
-    color: #fff;
-}
+<div class="card result">
+    <div class="matrix-box matrix-C">
+        <label for="">Matriks L</label>
+        <div class="matrix-input" id="resultL"></div> <!-- Hasil Matriks L -->
+    </div>
+    <div class="matrix-box matrix-C">
+        <label for="">Matriks U</label>
+        <div class="matrix-input" id="resultU"></div> <!-- Hasil Matriks U -->
+    </div>
+</div>
