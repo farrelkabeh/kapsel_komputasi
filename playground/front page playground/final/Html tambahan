@@ -1,0 +1,8 @@
+<div class="matrix-box matrix-C">
+    <label for="">Matriks L</label>
+    <div class="matrix-input" id="resultL"></div> <!-- Matriks L akan ditampilkan di sini -->
+</div>
+<div class="matrix-box matrix-C">
+    <label for="">Matriks U</label>
+    <div class="matrix-input" id="resultU"></div> <!-- Matriks U akan ditampilkan di sini -->
+</div>
