@@ -121,12 +121,7 @@ function LUdekom(A) {
     );
     const U = A.map(row => row.map(value => fraction(value)));
 
-    // if (n !== A[0].length) {
-    //     throw new TypeError('Matriks yang diberikan bukan matriks persegi.');
-    // }
-    
-    // LU Decomposition Logic
-    function deter(B, peng = 1) { // Fungsi determinan dengan rekursif (kofaktor)
+    function deter(B, peng = 1) { 
         const ukuran = B.length;
         if (ukuran === 1) {
             return peng * B[0][0];
@@ -151,8 +146,8 @@ function LUdekom(A) {
         }
     }
 
-    function detsub(A) { // Fungsi minor utama terdepan
-        const boneka = new Array(A.length).fill(0); // Array untuk entri-entri rasional
+    function detsub(A) { 
+        const boneka = new Array(A.length).fill(0);
         for (let l = 0; l < A.length; l++) {
             const submatriks = A.slice(0, l + 1).map(row => row.slice(0, l + 1));
             boneka[l] = deter(submatriks);
@@ -160,7 +155,7 @@ function LUdekom(A) {
         return boneka;
     }
 
-    function cekdetsub_lu(X) { // Fungsi untuk memeriksa apakah minor utama terdepan nol atau tidak
+    function cekdetsub_lu(X) {
         return detsub(X).some(value => value === 0) ? 1 : 0;
     }
 
@@ -180,4 +175,26 @@ function LUdekom(A) {
 
     console.log('L =', L.map(row => row.map(value => value.toFraction())));
     console.log('U =', U.map(row => row.map(value => value.toFraction())));
+
+    // Tampilkan Matriks L dan U di halaman
+    displayMatrix(L, 'resultL');
+    displayMatrix(U, 'resultU');
+}
+
+function displayMatrix(matrix, containerId) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = ''; // Kosongkan isi sebelumnya
+    const table = document.createElement('table');
+    
+    matrix.forEach(row => {
+        const tr = document.createElement('tr');
+        row.forEach(value => {
+            const td = document.createElement('td');
+            td.textContent = value.toFraction(); // Tampilkan dalam bentuk fraction
+            tr.appendChild(td);
+        });
+        table.appendChild(tr);
+    });
+    
+    container.appendChild(table);
 }
