@@ -1,0 +1,209 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif; 
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: linear-gradient(to bottom, #2c3e50, #4ca1af); 
+    color: white;
+}
+
+.page {
+    position: relative;
+    display: flex;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.card {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    min-height: 400px;
+    min-width: 400px;
+    background: rgba(255, 255, 255, .2);
+    box-shadow: 0 0 15px rgba(0, 0, 0, .1);
+    transition: .5s;
+    z-index: 10;
+}
+
+aside {
+    width: 100%;
+    padding: 32px;
+}
+
+aside header {
+    position: relative;
+    display: flex;
+    padding-bottom: 24px;
+    align-items: center;
+}
+
+.prompt {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.card input {
+    width: 60px;
+    height: 40px;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    background: rgba(255, 255, 255, .3);
+    border-radius: 8px;
+    text-align: center;
+    justify-content: center;
+    color: white;
+}
+
+button {
+    margin-top: 16px;
+    padding: 10px 15px;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.set-ordo {
+    background: linear-gradient(90deg, #00aaff, #0047bb); 
+    color: white;
+}
+
+.set-ordo:hover {
+    background: linear-gradient(90deg, #0088cc, #003d99); 
+}
+
+.whatsapp-btn {
+    background: linear-gradient(90deg, #00aaff, #0047bb); 
+    color: white;
+    border: none;
+    font-size: 16px;
+    border-radius: 8px;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin-left: 0; 
+}
+
+.whatsapp-btn:hover {
+    background: linear-gradient(90deg, #0088cc, #003d99); 
+}
+
+.result {
+    display: flex;
+    width: max-content;
+    height: max-content;
+    min-height: 250px;
+    min-width: 250px;
+    padding: 24px;
+    justify-content: center;
+    align-items: center;
+}
+
+.close-btn {
+    background-color: red;
+    color: white;
+    font-size: 24px;
+    padding: 5px;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-radius: 50%;
+}
+
+.app-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: linear-gradient(90deg, #00aaff, #0047bb); 
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 32px; 
+    font-weight: bold;
+}
+
+.help-btn {
+    background-color: #97c3f7; 
+    color: #fff; 
+    border: none; 
+    border-radius: 10px; 
+    padding: 10px 20px; 
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+}
+
+.btn-kontak:hover, .btn-question:hover {
+    background-color: #ff80b3; 
+}
+
+.btn-question:hover {
+    background-color: #ff99ff; 
+}
+
+.side-panel {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 200px;
+    height: calc(100% - 60px); 
+    background-color: #333; 
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.side-panel nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.side-panel nav ul li {
+    margin-bottom: 15px;
+}
+
+.side-panel nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.side-panel nav ul li a.active {
+    background-color: #005bb5; 
+}
+
+.side-panel nav ul li a:hover {
+    text-decoration: underline;
+}
+
+
+.page {
+    margin-left: 220px; 
+    margin-top: 100px;  
+    height: calc(100vh - 100px); 
+}
+
+.card {
+    backdrop-filter: blur(8px);
+}
