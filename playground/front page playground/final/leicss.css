@@ -1,0 +1,232 @@
+/* Reset */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Page Layout */
+.page {
+    position: relative;
+    display: flex;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom right, #1c1c1c, #4b4b4b);
+    overflow: hidden;
+    color: #fff;
+}
+
+/* Big Header */
+.page .big-header {
+    position: absolute;
+    bottom: -100%;
+    font-size: 150px;
+    color: rgba(255, 255, 255, 0.1);
+    transition: .5s;
+}
+
+.page .big-header.used {
+    bottom: 48px;
+}
+
+/* Toggle Button */
+.toggle-btn {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    font-size: 24px;
+    color: #ffffff;
+    z-index: 10000;
+    cursor: pointer;
+    background-color: #ff9800;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    transition: background-color 0.3s ease;
+}
+
+.toggle-btn:hover {
+    background-color: #e68900;
+}
+
+/* Card Layout */
+.card {
+    position: relative;
+    display: flex;
+    border-radius: 20px;
+    min-height: 400px;
+    min-width: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    padding: 20px;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+}
+
+aside {
+    width: 100%;
+    padding: 32px;
+}
+
+aside header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 24px;
+}
+
+.prompt {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.prompt label {
+    font-size: 16px;
+    color: #ffffff;
+}
+
+.prompt input {
+    width: 60px;
+    height: 40px;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 5px;
+    border: 2px solid #ff9800;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    outline: none;
+}
+
+.prompt input:hover {
+    border-color: #e68900;
+}
+
+button.set-ordo {
+    padding: 10px 20px;
+    background-color: #ff9800;
+    border: none;
+    border-radius: 5px;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    transition: background-color 0.3s ease;
+}
+
+button.set-ordo:hover {
+    background-color: #e68900;
+}
+
+.content {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.content::-webkit-scrollbar-thumb {
+    background-color: #ff9800;
+    border-radius: 10px;
+}
+
+.matrix-input input {
+    width: 50px;
+    height: 50px;
+    font-size: 16px;
+    text-align: center;
+    border: 2px solid #ff9800;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    margin: 3px;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+
+.matrix-input input:hover {
+    border-color: #e68900;
+}
+
+/* Result Card */
+/* Perbaikan pada card hasil */
+.card.result {
+    display: flex;
+    flex-direction: column; /* Atur layout vertikal */
+    justify-content: center; /* Posisi konten di tengah */
+    align-items: center;
+    width: 400px; /* Sesuaikan ukuran */
+    height: auto; /* Otomatis menyesuaikan tinggi */
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    color: #ffffff;
+    margin-top: 20px; /* Beri jarak dari card lain */
+}
+
+.matrix-box {
+    margin-top: 10px;
+    text-align: center; /* Teks label dan hasil di tengah */
+}
+
+.matrix-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.matrix-box table {
+    border-collapse: collapse;
+}
+
+.matrix-box table td {
+    border: 1px solid #ff9800;
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    cursor: pointer;
+}
+
+.close-btn svg {
+    width: 25px;
+    height: 25px;
+    fill: #ffffff;
+}
+
+.result input.det {
+    width: 130px;
+    height: 130px;
+    font-size: 48px;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid #ff9800;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+/* Responsive Layout */
+@media (max-width: 855px) {
+    .card {
+        flex-direction: column;
+        min-width: 300px;
+    }
+
+    .result input.det {
+        font-size: 36px;
+    }
+}
