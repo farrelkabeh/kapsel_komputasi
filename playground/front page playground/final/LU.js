@@ -50,11 +50,11 @@ function setGrid() {
             const newInput = document.createElement('input');
             newInput.setAttribute('type', 'number');
             newInput.style.width = '40px'; // Set width directly
-            // inputBox.appendChild(newInput);
+            // inputBox.appendChild(newInput); // Comment dulu gara2 ...
         }
-        // inputBox.style.display = 'grid'; // Make sure the box uses grid layout
-        // inputBox.style.gridTemplateColumns = `repeat(${jmlOrdo}, 40px)`;
-        // inputBox.style.gridTemplateRows = `repeat(${jmlOrdo}, 40px)`;
+        // // inputBox.style.display = 'grid'; // Make sure the box uses grid layout
+        // // inputBox.style.gridTemplateColumns = `repeat(${jmlOrdo}, 40px)`;
+        // // inputBox.style.gridTemplateRows = `repeat(${jmlOrdo}, 40px)`;
     } else {
         alert('Ordo matriks harus di antara 2—5.');
     }
