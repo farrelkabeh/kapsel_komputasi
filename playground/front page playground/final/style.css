@@ -290,6 +290,26 @@ button {
     font-size: 48px;
 }
 
+.matrix-container table {
+    grid-area: matrixTable;
+}
+
+.matrix-container button {
+    grid-area: matrixButton;
+}
+
+.matrix-container {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: auto;
+    grid-template-areas:
+    "   matrixTable   "
+    "   matrixButton   "
+    ;
+    justify-content: center;
+    align-items: center;
+}
+
 @media(max-width: 1285px) {
     .page .big-header {
         font-size: 125px;
