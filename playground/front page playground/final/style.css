@@ -7,6 +7,16 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button, 
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none; /* For Chrome, Safari, and Opera */
+    margin: 0; /* Remove margin for better layout */
+}
+
 .page {
     position: relative;
     display: flex;
