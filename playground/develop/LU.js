@@ -56,7 +56,7 @@ function setGrid() {
         // // inputBox.style.gridTemplateColumns = `repeat(${jmlOrdo}, 40px)`;
         // // inputBox.style.gridTemplateRows = `repeat(${jmlOrdo}, 40px)`;
     } else {
-        alert('Ordo matriks harus di antara 2—5.');
+        // alert('Ordo matriks harus di antara 2—5.');
     }
 }
 
@@ -106,7 +106,7 @@ function generateMatrix() {
             A.push(row);
         }
         console.log('Matrix:', A);
-        alert('Matriks telah dibuat. Periksa console untuk keluaran.');
+        // alert('Matriks telah dibuat. Periksa console untuk keluaran.');
         LUdekom(A); // Call the LU decomposition function with the matrix A
     };
     container.appendChild(submitButton);
@@ -165,6 +165,8 @@ function LUdekom(A) {
     }
 
     if (cekdetsub_lu(A) === 1) {
+        showResult(); // Mengeluarkan tampilan modal - terdapat pada file result.js
+        resultNoLUDecomp(); // Fungsi yang memberitahu user bahwa matriks tidak dapat didekomposisi LU - terdapat pada file result.js
         throw new TypeError("Matriks tidak dapat didekomposisi LU. Ada minor utama terdepan dari matriks yang nol.");
     } else {
         for (let k = 0; k < n - 1; k++) {
@@ -180,4 +182,7 @@ function LUdekom(A) {
 
     console.log('L =', L.map(row => row.map(value => value.toFraction())));
     console.log('U =', U.map(row => row.map(value => value.toFraction())));
+
+    showResult();
+    resultYesLUDecomp(L,U);
 }

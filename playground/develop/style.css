@@ -23,8 +23,11 @@ input[type="number"]::-webkit-inner-spin-button {
     min-height: 100vh;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(to bottom, rgb(0, 0, 0), rgb(231, 164, 76));
-    filter: hue-rotate(180deg);
+    /* background: linear-gradient(to bottom, rgb(0, 0, 0), rgb(231, 164, 76)); */
+    background-image: url(static/layered-waves-haikei.svg);
+    background-position: center;
+    background-size: cover;
+    /* filter: hue-rotate(180deg); */
     overflow: hidden;
 }
 
@@ -46,7 +49,7 @@ input[type="number"]::-webkit-inner-spin-button {
     left: 24px;
     font-size: 24px;
     color: rgb(255, 255, 255);
-    z-index: 10000;
+    z-index: 2;
     cursor: pointer;
 }
 
@@ -71,10 +74,12 @@ input[type="number"]::-webkit-inner-spin-button {
     border-radius: 20px;
     min-height: 400px;
     min-width: 400px;
-    background: rgba(255, 255, 255, .2);
+    background: rgba(255, 255, 255, .25);
+    backdrop-filter: blur(10px);
     box-shadow: 0 0 15px rgba(0, 0, 0, .1);
     transition: .5s;
     z-index: 10;
+    padding: 1.5rem;
 }
 
 nav {
@@ -132,21 +137,30 @@ nav {
 
 aside {
     width: 100%;
-    padding: 32px;
 }
 
 aside header {
     position: relative;
-    display: flex;
     padding-bottom: 24px;
-    align-items: center;
     gap: 16px;
+}
+
+aside header .ordo-title {
+    display: flex;
+    justify-content: center;
+}
+
+aside header .set-matrix {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 2px;
 }
 
 .content {
     padding-top: 20px;
-    max-height: 405px;
-    overflow-y: scroll;
+    /* max-height: 405px; */
+    /* overflow-y: scroll; */
 }
 
 .content.det {
@@ -217,7 +231,7 @@ aside header {
 
 /* set ordo, lihat hasil */
 button {
-    margin-top: 16px;
+    /* margin-top: 16px; */
     padding: 8px;
     border: none;
     outline: none;
@@ -305,6 +319,7 @@ button {
 }
 
 .matrix-container button {
+    margin-top: 1rem;
     grid-area: matrixButton;
 }
 
@@ -318,6 +333,98 @@ button {
     ;
     justify-content: center;
     align-items: center;
+}
+
+.modal-bg {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    overflow: hidden; /* Prevents content overflow */
+    opacity: 0;
+    transition: all 0.25s;
+}
+
+/* To show the modal bg */
+.modal-bg-show {
+    opacity: 1;
+    z-index: 2000;
+}
+
+.modal-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.modal-container-box {
+    padding: 1.5rem;
+    /* min-height: 35vh; */
+    background-color: white;
+    border-radius: 1rem;
+}
+
+.modal-container-box > *:not(hr) {
+    padding: 1rem 0;
+}
+
+.modal-button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal-button a {
+    color: white;
+    border-radius: 2000px;
+    background-color: #c62368;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+}
+
+.modal-box table,.modal-box th,.modal-box td {
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.modal-box td {
+    padding: 1rem;
+}
+
+.modal-box caption {
+    padding-bottom: 1rem;
+}
+
+.modal-box .lTable {
+    grid-area: lTable;
+}
+
+.modal-box .uTable {
+    grid-area: uTable;
+}
+
+.modal-box p {
+    grid-area: pModal;
+}
+
+.modal-box {
+    display: grid;
+    grid-template-rows: repeat(2,auto);
+    grid-template-columns: repeat(2,minmax(auto,1fr));
+    grid-template-areas: 
+    "   lTable       uTable   "
+    "   pModal      pModal  "
+    ;
+    gap: 1rem;
+    max-width: 80vw;
+    overflow: auto;
 }
 
 @media(max-width: 1285px) {

@@ -12,25 +12,37 @@
 
 <body>
     <section class="page">
-        <div class="toggle-btn">Kalkulator Dekomposisi LU</div>
+        <div class="toggle-btn"><strong>Kalkulator Dekomposisi LU</strong></div>
 
         <div class="card">
             <aside>
+                <header>
+                    <div class="ordo-title" style="color: white;">
+                        Set Matrix Dimension:
+                    </div>
+                    <div class="set-matrix">
+                        <input id="size" type="number" min="2" max="5">
+                        <button class="set-ordo" onclick="generateMatrix()">Enter</button>
+                    </div>
+                    <div class="v-line"></div>
+                </header>
+                <!--
                 <header>
                     <div class="prompt">
                         <label for="size">Ordo :</label>
                         <input id="size" type="number" min="2" max="5">
                     </div>
-                    <button class="set-ordo" onclick="generateMatrix()">Buat Matriks</button>
+                    <button class="set-ordo" onclick="generateMatrix()">Enter</button>
                     <div class="v-line"></div>
                 </header>
+                -->
 
                 <div class="content">
                     <div class="matrix-container" id="matrixContainer"></div>
                 </div>
             </aside>
         </div>
-
+        <!--
         <div class="card result">
             <div class="close-btn">
             </div>
@@ -39,9 +51,29 @@
                 <div class="matrix-input"></div>
             </div>
         </div>
+        -->
     </section>
 
+    <div class="modal-bg">
+        <div class="modal-container">
+            <div class="modal-container-box">
+                <div class="modal-header">
+                    <p style="font-weight: 900;">Matrix Result</p>
+                </div>
+                <hr style="border: none; height: 1px; background-color: #ccc;">
+                <div class="modal-box">
+                    <!-- This will be the content for the result of the matrix -->
+                </div>
+                <div class="modal-button">
+                    <a onclick="closeResult()">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="LU.js"></script>
+    <script src="debug.js"></script>
+    <script src="result.js"></script>
 </body>
 
 </html>
