@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Kalkulator Dekomposisi LU</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.3.0/math.min.js"></script>
+</head>
+
+<body>
+    <section class="page">
+        <div class="toggle-btn">Kalkulator Dekomposisi LU</div>
+
+        <div class="card">
+            <aside>
+                <header>
+                    <div class="prompt">
+                        <label for="size">Ordo :</label>
+                        <input id="size" type="number" min="2" max="5">
+                    </div>
+                    <button class="set-ordo" onclick="generateMatrix()">Buat Matriks</button>
+                    <div class="v-line"></div>
+                </header>
+
+                <div class="content">
+                    <div class="matrix-container" id="matrixContainer"></div>
+                </div>
+            </aside>
+        </div>
+
+        <div class="card result">
+            <div class="close-btn">
+            </div>
+            <div class="matrix-box matrix-C">
+                <label for="">Hasil</label>
+                <div class="matrix-input"></div>
+            </div>
+        </div>
+    </section>
+
+    <script src="LU.js"></script>
+</body>
+
+</html>
