@@ -1,1 +1,55 @@
 let history = [];
+function tambahKeRiwayat(L, U) {
+    // Buat entri baru di array riwayat
+    history.push({ L, U });
+    tampilkanRiwayat();
+}
+
+function tampilkanRiwayat() {
+    const historyContainer = document.getElementById('historyContainer');
+    historyContainer.innerHTML = ''; // Bersihkan riwayat sebelumnya
+
+    history.forEach((entry, index) => {
+        const historyEntry = document.createElement('div');
+        historyEntry.classList.add('history-entry');
+        
+        const Lmatrix = entry.L.map(row => row.map(value => value.toFraction())).join('<br>');
+        const Umatrix = entry.U.map(row => row.map(value => value.toFraction())).join('<br>');
+
+        historyEntry.innerHTML = `
+            <p>Entri ${index + 1}:</p>
+            <p>Matriks L:<br>${Lmatrix}</p>
+            <p>Matriks U:<br>${Umatrix}</p>
+            <hr>
+        `;
+        historyContainer.appendChild(historyEntry);
+    });
+}
+
+function LUdekom(A) {
+    const n = A.length;
+    const L = Array.from({ length: n }, (_, i) => 
+        Array.from({ length: n }, (_, j) => (i === j ? fraction(1) : fraction(0)))
+    );
+    const U = A.map(row => row.map(value => fraction(value)));
+
+    if (cekdetsub_lu(A) === 1) {
+        throw new TypeError("Matriks tidak dapat didekomposisi LU. Ada minor utama terdepan dari matriks yang nol.");
+    } else {
+        for (let k = 0; k < n - 1; k++) {
+            for (let i = k + 1; i < n; i++) {
+                const faktor = U[i][k].div(U[k][k]);
+                L[i][k] = faktor;
+                for (let j = k; j < n; j++) {
+                    U[i][j] = U[i][j].sub(faktor.mul(U[k][j]));
+                }
+            }
+        }
+    }
+
+    // Tambahkan hasil L dan U ke riwayat
+    tambahKeRiwayat(L, U);
+
+    console.log('L =', L.map(row => row.map(value => value.toFraction())));
+    console.log('U =', U.map(row => row.map(value => value.toFraction())));
+}
