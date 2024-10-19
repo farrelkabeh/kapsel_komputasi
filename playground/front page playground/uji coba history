@@ -1,4 +1,1 @@
-<div class="card history">
-    <label for="">History</label>
-    <div class="history-container" id="historyContainer"></div> <!-- History of calculations will be shown here -->
-</div>
+let history = [];
