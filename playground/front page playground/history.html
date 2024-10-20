@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style history.css">
+    <title>Kalkulator Dekomposisi LU</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.3.0/math.min.js"></script>
+</head>
+
+<body>
+    <header class="app-header">
+        <h1>Kalkulator Dekomposisi LU</h1>
+        <div class="header-buttons">
+            <button class="help-btn" onclick="navigateToHelp()">Help</button>
+            <button class="contact-btn" onclick="navigateToContact()">Contact Us</button>
+        </div>
+    </header>
+
+    <section class="page">
+        <div class="card">
+            <aside>
+                <header>
+                    <div class="prompt">
+                        <label for="size">Ordo :</label>
+                        <input id="size" type="number" min="2" max="5" aria-label="Input for matrix order">
+                    </div>
+                    <button class="set-ordo" onclick="generateMatrix()">Buat Matriks</button>
+                    <div class="v-line"></div>
+                </header>
+
+                <div class="content">
+                    <div class="matrix-container" id="matrixContainer"></div>
+                </div>
+            </aside>
+        </div>
+
+        <div class="card result">
+            <div class="close-btn"></div>
+            <div class="matrix-box matrix-C">
+                <label for="results">Hasil:</label>
+                <div id="results" class="matrix-input"></div>
+            </div>
+        </div>
+
+       <section class="history-section">
+    <h2>Riwayat Perhitungan</h2>
+    <ul id="historyList"></ul>
+</section>
+
+
+       
+        
+
+    <script src="LU History.js"></script>
+</body>
+
+</html>
