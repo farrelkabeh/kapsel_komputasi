@@ -183,6 +183,11 @@ function LUdekom(A) {
     console.log('L =', L.map(row => row.map(value => value.toFraction())));
     console.log('U =', U.map(row => row.map(value => value.toFraction())));
 
+    console.log(A);
+    console.log(L);
+    console.log(U);
+
     showResult();
     resultYesLUDecomp(L,U);
+    historyLUDecomp(L,U,A);
 }

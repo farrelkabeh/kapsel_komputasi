@@ -52,6 +52,9 @@
             </div>
         </div>
         -->
+        <div class="history-button">
+            <button id="historyButton" style="font-size: 1.5rem;padding: 0.5rem 1rem;">History</button>
+        </div>
     </section>
 
     <div class="modal-bg">
@@ -70,10 +73,29 @@
             </div>
         </div>
     </div>
+    
+    <div class="modal-bg-history">
+        <div class="modal-container-history">
+            <div class="modal-container-box-history">
+                <div class="modal-header">
+                    <p style="font-weight: 900;">History</p>
+                </div>
+                <hr style="border: none; height: 1px; background-color: #ccc;">
+                <div class="modal-box-history">
+                    <!-- This will be the content for the history -->
+                    <p class="modal-placeholder-history">History perhitungan matriks akan tersimpan di sini</p>
+                </div>
+                <div class="modal-button-history">
+                    <a onclick="closeHistory()">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="LU.js"></script>
     <script src="debug.js"></script>
     <script src="result.js"></script>
+    <script src="history.js"></script>
 </body>
 
 </html>
