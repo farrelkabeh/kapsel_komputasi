@@ -1,12 +1,21 @@
+@font-face {
+    font-family: 'Minecraft';
+    src: url(static/Minecraft.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: 'Verdana', 'Calibri';
+    font-family: 'Minecraft','Monospace', 'Verdana';
     user-select: none;
     -webkit-tap-highlight-color: transparent;
     scrollbar-width: thin;
+    letter-spacing: 0.1em;
 }
+
 
 input[type="number"] {
     -moz-appearance: textfield;
@@ -25,10 +34,8 @@ input[type="number"]::-webkit-inner-spin-button {
     justify-content: center;
     align-items: center;
     /* background: linear-gradient(to bottom, rgb(0, 0, 0), rgb(231, 164, 76)); */
-    background-image: url(static/layered-waves-haikei.svg);
-    background-position: center;
+    background-image: url(static/Overworld_background.png);
     background-size: cover;
-    /* filter: hue-rotate(180deg); */
     overflow: hidden;
 }
 
@@ -46,8 +53,9 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .toggle-btn {
     position: absolute;
-    top: 48px;
-    left: 48px;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%); /* Adjust for half the width of the element */
     font-size: 24px;
     color: rgb(255, 255, 255);
     z-index: 2;
@@ -56,8 +64,8 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .history-button {
     position: absolute;
-    right: 48px;
-    bottom: 48px;
+    right: 24px;
+    bottom: 24px;
     color: white;
     z-index: 2;
 }
@@ -80,7 +88,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .card {
     position: absolute;
     display: flex;
-    border-radius: 20px;
+    /* border-radius: 20px; */
     min-height: 400px;
     min-width: 400px;
     background: rgba(255, 255, 255, .25);
@@ -206,7 +214,7 @@ aside header .set-matrix {
     outline: none;
     background: rgba(255, 255, 255, .3);
     box-shadow:  0 0 5px rgba(0, 0, 0, .025);
-    border-radius: 8px;
+    /* border-radius: 8px; */
     text-align: center;
     color: rgb(255, 255, 255);
 }
@@ -246,7 +254,7 @@ button {
     outline: none;
     background: rgba(255, 255, 255, .3);
     box-shadow:  0 0 5px rgba(0, 0, 0, .025);
-    border-radius: 8px;
+    /* border-radius: 8px; */
     font-size: 14px;
     color: rgb(255, 255, 255);
     cursor: pointer;
@@ -377,7 +385,7 @@ button {
     padding: 1.5rem;
     /* min-height: 35vh; */
     background-color: white;
-    border-radius: 1rem;
+    /* border-radius: 1rem; */
 }
 
 .modal-container-box > *:not(hr) {
@@ -390,9 +398,10 @@ button {
 }
 
 .modal-button a {
-    color: white;
-    border-radius: 2000px;
-    background-color: #c62368;
+    color: #4f4e4f;
+    /* border-radius: 2000px; */
+    background-color: #c6c6c6;
+    border: 3px #4f4e4f solid;
     padding: 0.75rem 1.5rem;
     cursor: pointer;
 }
@@ -468,7 +477,7 @@ button {
     padding: 1.5rem;
     /* min-height: 35vh; */
     background-color: white;
-    border-radius: 1rem;
+    /* border-radius: 1rem; */
 }
 
 .modal-container-box-history > *:not(hr) {
@@ -481,9 +490,10 @@ button {
 }
 
 .modal-button-history a {
-    color: white;
-    border-radius: 2000px;
-    background-color: #c62368;
+    color: #4f4e4f;
+    /* border-radius: 2000px; */
+    background-color: #c6c6c6;
+    border: 3px #4f4e4f solid;
     padding: 0.75rem 1.5rem;
     cursor: pointer;
 }
