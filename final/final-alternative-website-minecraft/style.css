@@ -53,7 +53,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .toggle-btn {
     position: absolute;
-    top: 24px;
+    top: 0px;
     left: 50%;
     transform: translateX(-50%); /* Adjust for half the width of the element */
     font-size: 24px;

@@ -27,23 +27,23 @@ document.getElementById('size').oninput = function() {
     this.value = this.value.replace(/[^0-9]/g, ''); // cuma boleh angka
 };
 
-function setGrid() {
-    const jmlOrdo = parseInt(document.getElementById('size').value);
+// function setGrid() {
+//     const jmlOrdo = parseInt(document.getElementById('size').value);
 
-    if (jmlOrdo > 1 && jmlOrdo <= 5) {
-        inputBox.innerHTML = ''; // hapus matriks lama
-        for (let i = 0; i < jmlOrdo * jmlOrdo; i++) {
-            const newInput = document.createElement('input');
-            newInput.setAttribute('type', 'number');
-            newInput.style.width = '40px';
-            // tambahkan (ke depan/append) masukan baru ke "input box"
-            inputBox.appendChild(newInput);
-        }
-    }
-}
+//     if (jmlOrdo > 1 && jmlOrdo <= 5) {
+//         inputBox.innerHTML = ''; // hapus matriks lama
+//         for (let i = 0; i < jmlOrdo * jmlOrdo; i++) {
+//             const newInput = document.createElement('input');
+//             newInput.setAttribute('type', 'number');
+//             newInput.style.width = '40px';
+//             // tambahkan (ke depan/append) masukan baru ke "input box"
+//             inputBox.appendChild(newInput);
+//         }
+//     }
+// }
 
-// event listener
-setOrdo.addEventListener('click', setGrid, false);
+// // event listener
+// setOrdo.addEventListener('click', setGrid, false);
 
 function generateMatrix() {
     const size = parseInt(document.getElementById('size').value);
