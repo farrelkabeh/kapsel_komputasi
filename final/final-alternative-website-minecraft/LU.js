@@ -27,24 +27,6 @@ document.getElementById('size').oninput = function() {
     this.value = this.value.replace(/[^0-9]/g, ''); // cuma boleh angka
 };
 
-// function setGrid() {
-//     const jmlOrdo = parseInt(document.getElementById('size').value);
-
-//     if (jmlOrdo > 1 && jmlOrdo <= 5) {
-//         inputBox.innerHTML = ''; // hapus matriks lama
-//         for (let i = 0; i < jmlOrdo * jmlOrdo; i++) {
-//             const newInput = document.createElement('input');
-//             newInput.setAttribute('type', 'number');
-//             newInput.style.width = '40px';
-//             // tambahkan (ke depan/append) masukan baru ke "input box"
-//             inputBox.appendChild(newInput);
-//         }
-//     }
-// }
-
-// // event listener
-// setOrdo.addEventListener('click', setGrid, false);
-
 function generateMatrix() {
     const size = parseInt(document.getElementById('size').value);
     const container = document.getElementById('matrixContainer');
@@ -63,11 +45,16 @@ function generateMatrix() {
             const input = document.createElement('input');
             input.type = 'text';
 
-            // cuma boleh bilangan real
+            // Validasi input agar hanya bisa bilangan real
             input.oninput = function() {
-                this.value = this.value.replace(/[^0-9.-]/g, ''); //angka, titik (untuk desimal), dan tanda minus 
-                if (this.value.split('.').length > 2) this.value = this.value.slice(0, -1); // cuma boleh satu titik
-                if (this.value.indexOf('-') > 0) this.value = this.value.replace('-', ''); // minus cuma di depan
+                // Hanya izinkan angka, titik, dan tanda minus
+                this.value = this.value.replace(/[^0-9.-]/g, '');
+
+                // Pastikan hanya ada satu titik desimal
+                if (this.value.split('.').length > 2) this.value = this.value.slice(0, -1);
+
+                // Pastikan tanda minus hanya di awal
+                if (this.value.indexOf('-') > 0) this.value = this.value.replace('-', '');
             };
 
             cell.appendChild(input);
@@ -82,19 +69,35 @@ function generateMatrix() {
     submitButton.innerText = 'Hitung';
     submitButton.onclick = function() {
         const A = [];
+        let outOfRange = false;
+
         for (let i = 0; i < size; i++) {
             const row = [];
             const inputs = table.rows[i].getElementsByTagName('input');
             for (let j = 0; j < size; j++) {
                 const value = parseFloat(inputs[j].value);
+                
                 if (isNaN(value)) {
                     alert('Mohon masukkan entri bilangan real pada matriks.');
                     return;
                 }
+                
+                // cek apakah nilai di luar rentang (-9999, 9999)
+                if (value > 9999 || value < -9999) {
+                    outOfRange = true;
+                }
+                
                 row.push(value);
             }
             A.push(row);
         }
+
+        // peringatan jika ada nilai di luar rentang (-9999, 9999)
+        if (outOfRange) {
+            alert('Nilai entri matriks harus dalam rentang -9999 hingga 9999.');
+            return;
+        }
+
         console.log('Matrix:', A);
         LUdekom(A); // fungsi buat LU
     };
@@ -102,7 +105,7 @@ function generateMatrix() {
     container.appendChild(submitButton);
 }
 
-// tombol enter
+// Tombol enter
 document.getElementById('size').addEventListener('keypress', function(event) {
     if (event.key === 'Enter') {
         event.preventDefault(); // cegah kirim (submit)
@@ -122,7 +125,7 @@ function LUdekom(A) {
     );
     const U = A.map(row => row.map(value => fraction(value)));
 
-    // mekaniknya dari teorema LU
+    // Mekanika dari teorema LU
     function deter(B, peng = 1) { // Fungsi determinan dengan rekursif (kofaktor)
         const ukuran = B.length;
         if (ukuran === 1) {
@@ -190,6 +193,6 @@ function LUdekom(A) {
     console.log(U);
 
     showResult();
-    resultYesLUDecomp(L,U);
-    historyLUDecomp(L,U,A);
+    resultYesLUDecomp(L, U);
+    historyLUDecomp(L, U, A);
 }
