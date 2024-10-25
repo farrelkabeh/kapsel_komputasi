@@ -16,11 +16,16 @@ opBox.forEach(selected => {
     });
 });
 
-// Set ordo
+// Tetapkan ordo matriks
 const setOrdo = document.querySelector('.set-ordo');
-const inputBox = document.createElement('div'); // untuk masukan entri
+const inputBox = document.createElement('div'); // untuk masukan ukuran
 inputBox.classList.add('matrix-input');
 document.body.appendChild(inputBox);
+
+// masukan untuk ukuran hanya bisa angka
+document.getElementById('size').oninput = function() {
+    this.value = this.value.replace(/[^0-9]/g, ''); // cuma boleh angka
+};
 
 function setGrid() {
     const jmlOrdo = parseInt(document.getElementById('size').value);
@@ -31,9 +36,9 @@ function setGrid() {
             const newInput = document.createElement('input');
             newInput.setAttribute('type', 'number');
             newInput.style.width = '40px';
-            
+            // tambahkan (ke depan/append) masukan baru ke "input box"
+            inputBox.appendChild(newInput);
         }
-        
     }
 }
 
@@ -43,7 +48,7 @@ setOrdo.addEventListener('click', setGrid, false);
 function generateMatrix() {
     const size = parseInt(document.getElementById('size').value);
     const container = document.getElementById('matrixContainer');
-    container.innerHTML = ''; // hapus matriks lama
+    container.innerHTML = ''; // hapus matriks sebelumnya
 
     if (size < 2 || size > 5 || isNaN(size)) {
         alert('Ordo matriks harus di antara 2–5.');
@@ -56,9 +61,15 @@ function generateMatrix() {
         for (let j = 0; j < size; j++) {
             const cell = document.createElement('td');
             const input = document.createElement('input');
-            input.type = 'number'; // supaya masukannya numerik
-            input.setAttribute('min', '-9999'); // batas minimum
-            input.setAttribute('max', '9999');  // batas maksimum
+            input.type = 'text';
+
+            // cuma boleh bilangan real
+            input.oninput = function() {
+                this.value = this.value.replace(/[^0-9.-]/g, ''); //angka, titik (untuk desimal), dan tanda minus 
+                if (this.value.split('.').length > 2) this.value = this.value.slice(0, -1); // cuma boleh satu titik
+                if (this.value.indexOf('-') > 0) this.value = this.value.replace('-', ''); // minus cuma di depan
+            };
+
             cell.appendChild(input);
             row.appendChild(cell);
         }
@@ -66,7 +77,7 @@ function generateMatrix() {
     }
     container.appendChild(table);
 
-    // buat submit button
+    // bikin tombol untuk kirim (submit)
     const submitButton = document.createElement('button');
     submitButton.innerText = 'Hitung';
     submitButton.onclick = function() {
@@ -80,11 +91,6 @@ function generateMatrix() {
                     alert('Mohon masukkan entri bilangan real pada matriks.');
                     return;
                 }
-                // domainnya dipersempit supaya peluang muncul hasil terlalu rumit berkurang
-                if (value < -9999 || value > 9999) {
-                    alert('Nilai harus di antara -9999 dan 9999.');
-                    return;
-                }
                 row.push(value);
             }
             A.push(row);
@@ -92,9 +98,20 @@ function generateMatrix() {
         console.log('Matrix:', A);
         LUdekom(A); // fungsi buat LU
     };
-    
+
     container.appendChild(submitButton);
 }
+
+// tombol enter
+document.getElementById('size').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // cegah kirim (submit)
+        generateMatrix(); // klik manual saja
+    }
+});
+
+const setOrdoButton = document.querySelector('.set-ordo');
+setOrdoButton.addEventListener('click', generateMatrix);
 
 const { fraction } = math;
 
@@ -105,8 +122,6 @@ function LUdekom(A) {
     );
     const U = A.map(row => row.map(value => fraction(value)));
 
-    
-    
     // mekaniknya dari teorema LU
     function deter(B, peng = 1) { // Fungsi determinan dengan rekursif (kofaktor)
         const ukuran = B.length;
@@ -134,7 +149,7 @@ function LUdekom(A) {
     }
 
     function detsub(A) { // Fungsi minor utama terdepan
-        const boneka = new Array(A.length).fill(0); // array untuk entri-entri rasional
+        const boneka = new Array(A.length).fill(0);
         for (let l = 0; l < A.length; l++) {
             const submatriks = A.slice(0, l + 1).map(row => row.slice(0, l + 1));
             boneka[l] = deter(submatriks);
