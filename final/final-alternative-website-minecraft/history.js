@@ -18,41 +18,41 @@ function closeHistory() {
 }
 
 function historyLUDecomp(L, U, A) {
-    // For indexing based on the number of history-table-container
+    // indeksasi untuk tempat histori perhitungan/tabel
     const containers = document.getElementsByClassName('history-table-container');
     const index = containers.length;
 
-    // Remove the 'modal-placeholder-history' paragraph class (if it hasn't been done before)
+    // hapus 'modal-placeholder-history' class kalau belum dilakukan sebelumnya
     const placeholderParagraph = document.querySelector('.modal-placeholder-history');
 
-    // Check if the element exists before trying to remove it
+    // sebelum menghapus, cek ada-tidaknya unsur
     if (placeholderParagraph) {
         placeholderParagraph.remove(); // Remove the paragraph from the DOM
     }
 
-    // Selecting the modal box for history
+    // pilih modalBox untuk histori
     const modalBox = document.querySelector('.modal-box-history');
 
-    // Create a new div for the history table container
+    // bikin div baru untuk tempat tabel di histori
     const historyTableContainer = document.createElement('div');
     historyTableContainer.className = 'history-table-container';
 
-    // Create a paragraph inside the history table container
+    // bikin paragraf pada tempat tabel di histori
     const containerParagraph = document.createElement('p');
     containerParagraph.className = 'container-bridge';
     containerParagraph.style = 'color:#909090;';
     containerParagraph.textContent = `Perhitungan ${index + 1}: (${getCurrentTimestamp()})`; 
 
-    // Create a new div for the history table
+    
     const historyTableDiv = document.createElement('div');
     historyTableDiv.className = 'history-table';
 
-    // Create A Table
+   
     const aTable = document.createElement('table');
     aTable.className = 'aTable';
     aTable.innerHTML = '<caption>A</caption>';
 
-    // Convert numeric values in A to Fraction objects and create rows
+    // ubah entri numerik di A menjadi pecahan
     A.forEach(row => {
         const tr = document.createElement('tr');
         row.forEach(value => {
@@ -65,7 +65,7 @@ function historyLUDecomp(L, U, A) {
         aTable.appendChild(tr);
     });
 
-    // Create L table
+    // matriks L (tabel)
     const lTable = document.createElement('table');
     lTable.className = 'lTable';
     lTable.innerHTML = '<caption>L</caption>';
@@ -79,7 +79,7 @@ function historyLUDecomp(L, U, A) {
         lTable.appendChild(tr);
     });
 
-    // Create U table
+    // matriks U (tabel)
     const uTable = document.createElement('table');
     uTable.className = 'uTable';
     uTable.innerHTML = '<caption>U</caption>';
@@ -93,17 +93,17 @@ function historyLUDecomp(L, U, A) {
         uTable.appendChild(tr);
     });
 
-    // Append the paragraph and tables to the history table container
-    historyTableContainer.appendChild(containerParagraph); // Append the paragraph
-    historyTableContainer.appendChild(historyTableDiv); // Append the history table div
+    // tambahkan (ke belakang/append) paragraf dan tabel ke tempat tabel di histori
+    historyTableContainer.appendChild(containerParagraph); // paragrafnya
+    historyTableContainer.appendChild(historyTableDiv); // div untuk histori dari tabel
     historyTableDiv.appendChild(aTable);
     historyTableDiv.appendChild(lTable);
     historyTableDiv.appendChild(uTable);
 
     historyTableDiv.style='overflow:auto;max-width:60vw;padding-bottom:1rem;';
 
-    // Prepend the history table container to the modal box
-    modalBox.prepend(historyTableContainer); // Use prepend to add the new container on top
+    // tambahkan (ke depan/prepend) si tempat tabel di histori ke modal box
+    modalBox.prepend(historyTableContainer); 
 }
 
 
