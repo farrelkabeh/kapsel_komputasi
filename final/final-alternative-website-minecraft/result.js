@@ -102,6 +102,7 @@ function resultYesLUDecomp(L, U) {
         row.forEach(value => {
             const td = document.createElement('td');
             td.textContent = formatNumber(value.valueOf()); // Decimal form
+            td.style = "min-width:4rem;"
             tr.appendChild(td);
         });
         lTableDec.appendChild(tr);
@@ -116,6 +117,7 @@ function resultYesLUDecomp(L, U) {
         row.forEach(value => {
             const td = document.createElement('td');
             td.textContent = formatNumber(value.valueOf()); // Decimal form
+            td.style = "min-width:4rem;"
             tr.appendChild(td);
         });
         uTableDec.appendChild(tr);
