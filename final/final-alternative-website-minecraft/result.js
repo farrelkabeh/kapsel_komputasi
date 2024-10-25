@@ -40,9 +40,32 @@ function resultNoLUDecomp() {
 
 function resultYesLUDecomp(L, U) {
     const modalBox = document.querySelector('.modal-box');
-    modalBox.innerHTML = ''; // Hapus konten sebelumnya jika ada
+    modalBox.innerHTML = ''; // Clear previous content if any
 
-    // Tampilkan tabel L dalam bentuk pecahan
+    // Function to format numbers with a maximum of three significant figures
+    function formatNumber(num) {
+        const strNum = num.toString();
+        const decimalIndex = strNum.indexOf('.');
+        if (decimalIndex === -1) {
+            return num; // No decimal, return as is
+        }
+        
+        const integerPart = strNum.slice(0, decimalIndex);
+        const decimalPart = strNum.slice(decimalIndex + 1);
+
+        if (integerPart.length >= 3) {
+            // Use fixed 3 decimal places for larger numbers
+            return num.toFixed(3);
+        } else if (integerPart.length === 2) {
+            // Up to 2 decimal places if the integer part has 2 digits
+            return num.toFixed(2);
+        } else {
+            // Up to 1 decimal place if the integer part has 1 digit
+            return num.toFixed(1);
+        }
+    }
+
+    // Display L table in fraction form
     const lTableFrac = document.createElement('table');
     lTableFrac.className = 'lTable';
     lTableFrac.innerHTML = '<caption>L</caption>';
@@ -50,27 +73,27 @@ function resultYesLUDecomp(L, U) {
         const tr = document.createElement('tr');
         row.forEach(value => {
             const td = document.createElement('td');
-            td.textContent = value.toFraction(); // Bentuk pecahan
+            td.textContent = value.toFraction(); // Fraction form
             tr.appendChild(td);
         });
         lTableFrac.appendChild(tr);
     });
 
-     // Tampilkan tabel U dalam bentuk pecahan
-     const uTableFrac = document.createElement('table');
-     uTableFrac.className = 'uTable';
-     uTableFrac.innerHTML = '<caption>U</caption>';
-     U.forEach(row => {
-         const tr = document.createElement('tr');
-         row.forEach(value => {
-             const td = document.createElement('td');
-             td.textContent = value.toFraction(); // Bentuk pecahan
-             tr.appendChild(td);
-         });
-         uTableFrac.appendChild(tr);
-     });
+    // Display U table in fraction form
+    const uTableFrac = document.createElement('table');
+    uTableFrac.className = 'uTable';
+    uTableFrac.innerHTML = '<caption>U</caption>';
+    U.forEach(row => {
+        const tr = document.createElement('tr');
+        row.forEach(value => {
+            const td = document.createElement('td');
+            td.textContent = value.toFraction(); // Fraction form
+            tr.appendChild(td);
+        });
+        uTableFrac.appendChild(tr);
+    });
 
-    // Tampilkan tabel L dalam bentuk desimal
+    // Display L table in decimal form
     const lTableDec = document.createElement('table');
     lTableDec.className = 'lTable';
     lTableDec.innerHTML = '<caption>L (Desimal)</caption>';
@@ -78,13 +101,13 @@ function resultYesLUDecomp(L, U) {
         const tr = document.createElement('tr');
         row.forEach(value => {
             const td = document.createElement('td');
-            td.textContent = value.valueOf().toFixed(4); // Bentuk desimal
+            td.textContent = formatNumber(value.valueOf()); // Decimal form
             tr.appendChild(td);
         });
         lTableDec.appendChild(tr);
     });
 
-    // Tampilkan tabel U dalam bentuk desimal
+    // Display U table in decimal form
     const uTableDec = document.createElement('table');
     uTableDec.className = 'uTable';
     uTableDec.innerHTML = '<caption>U (Desimal)</caption>';
@@ -92,17 +115,13 @@ function resultYesLUDecomp(L, U) {
         const tr = document.createElement('tr');
         row.forEach(value => {
             const td = document.createElement('td');
-            td.textContent = value.valueOf().toFixed(4); // Bentuk desimal
+            td.textContent = formatNumber(value.valueOf()); // Decimal form
             tr.appendChild(td);
         });
         uTableDec.appendChild(tr);
     });
 
-   
-
-    
-
-    // Tambahkan tabel ke modalBox
+    // Add tables to modalBox
     modalBox.appendChild(lTableFrac);
     modalBox.appendChild(uTableFrac);
     modalBox.appendChild(lTableDec);
