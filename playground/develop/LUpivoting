@@ -45,3 +45,11 @@ function luPivotRobust(A, tol = 1e-10, verbose = true) {
 
     return { P, L, U };
 }
+
+const A = [
+    [0.0008, 2, 3],
+    [1/2, 7, -3],
+    [3, 2, 125]
+];
+const result = luPivotRobust(A);
+console.log(result);
