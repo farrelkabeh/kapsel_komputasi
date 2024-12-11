@@ -164,40 +164,73 @@ function resultYesLUDecomp(L, U) {
     headerModal.innerHTML = 'LU Decomposition';
 
     const modalBox = document.querySelector('.modal-box-content');
+    modalBox.innerHTML = ''; // Clear previous content
 
-    // Format values safely (use math.format for fractions and numbers)
-    const formatValue = value =>
-        math.isFraction(value) ? value.toFraction() : value.toFixed(3);
+    // Create toggle buttons
+    const toggleContainer = document.createElement('div');
+    toggleContainer.className = 'toggle-container';
 
-    // Create L Table
+    const fractionButton = document.createElement('button');
+    fractionButton.textContent = 'Fraction';
+    fractionButton.className = 'fraction-toggle active'; // Default active
+    fractionButton.onclick = () => updateMatrixDisplay('fraction');
+
+    const decimalButton = document.createElement('button');
+    decimalButton.textContent = 'Decimal';
+    decimalButton.className = 'decimal-toggle';
+    decimalButton.onclick = () => updateMatrixDisplay('decimal');
+
+    toggleContainer.appendChild(fractionButton);
+    toggleContainer.appendChild(decimalButton);
+    modalBox.appendChild(toggleContainer);
+
+    // Function to update matrix display
+    const updateMatrixDisplay = (format) => {
+        lTable.innerHTML = '<caption>L</caption>';
+        uTable.innerHTML = '<caption>U</caption>';
+
+        const formatValue = (value) =>
+            format === 'fraction'
+                ? math.isFraction(value) ? value.toFraction() : value
+                : math.isFraction(value) ? value.valueOf().toFixed(3) : value.toFixed(3);
+
+        // Update L table
+        L.forEach(row => {
+            const tr = document.createElement('tr');
+            row.forEach(value => {
+                const td = document.createElement('td');
+                td.textContent = formatValue(value);
+                tr.appendChild(td);
+            });
+            lTable.appendChild(tr);
+        });
+
+        // Update U table
+        U.forEach(row => {
+            const tr = document.createElement('tr');
+            row.forEach(value => {
+                const td = document.createElement('td');
+                td.textContent = formatValue(value);
+                tr.appendChild(td);
+            });
+            uTable.appendChild(tr);
+        });
+
+        // Update active toggle state
+        fractionButton.classList.toggle('active', format === 'fraction');
+        decimalButton.classList.toggle('active', format === 'decimal');
+    };
+
+    // Create L and U tables
     const lTable = document.createElement('table');
     lTable.className = 'lTable';
-    lTable.innerHTML = '<caption>L</caption>';
-    L.forEach(row => {
-        const tr = document.createElement('tr');
-        row.forEach(value => {
-            const td = document.createElement('td');
-            td.textContent = formatValue(value);
-            tr.appendChild(td);
-        });
-        lTable.appendChild(tr);
-    });
 
-    // Create U Table
     const uTable = document.createElement('table');
     uTable.className = 'uTable';
-    uTable.innerHTML = '<caption>U</caption>';
-    U.forEach(row => {
-        const tr = document.createElement('tr');
-        row.forEach(value => {
-            const td = document.createElement('td');
-            td.textContent = formatValue(value);
-            tr.appendChild(td);
-        });
-        uTable.appendChild(tr);
-    });
 
-    // Append tables to modal
     modalBox.appendChild(lTable);
     modalBox.appendChild(uTable);
+
+    // Initial display as fractions
+    updateMatrixDisplay('fraction');
 }
