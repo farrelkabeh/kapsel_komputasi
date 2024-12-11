@@ -1,66 +1,145 @@
+// Calculator Feature Initialization
+const selectedOp = document.querySelector('.operator-get');
+const opBox = document.querySelectorAll('.operator-box');
+const usedOperator = document.querySelector('.used-operator p');
+const setOrdoButton = document.querySelector('.set-ordo');
+const { fraction } = math;
+
+// Operation Selection
+opBox.forEach(selected => {
+    selected.addEventListener('click', function () {
+        document.querySelector('.selected')?.classList.remove("selected");
+        selected.classList.add("selected");
+        usedOperator.textContent = selected.querySelector('p').textContent;
+    });
+});
+
+// Input Box for Matrix Size
+const inputBox = document.createElement('div');
+inputBox.classList.add('matrix-input');
+document.body.appendChild(inputBox);
+
+// Matrix Size Validation
+document.getElementById('size').oninput = function () {
+    this.value = this.value.replace(/[^0-9]/g, ''); // Only allow numbers
+};
+
+// Generate Matrix Input Fields
+function generateMatrix() {
+    const size = parseInt(document.getElementById('size').value);
+    const container = document.getElementById('matrixContainer');
+    container.innerHTML = ''; // Clear previous matrix
+
+    if (isNaN(size) || size < 2 || size > 5) {
+        alert('Ordo matriks harus di antara 2–5.');
+        return;
+    }
+
+    // Create Matrix Input Table
+    const table = document.createElement('table');
+    for (let i = 0; i < size; i++) {
+        const row = document.createElement('tr');
+        for (let j = 0; j < size; j++) {
+            const cell = document.createElement('td');
+            const input = document.createElement('input');
+            input.type = 'text';
+
+            // Input Validation: Only Real Numbers
+            input.oninput = function () {
+                this.value = this.value.replace(/[^0-9.-]/g, '');
+                if (this.value.split('.').length > 2) this.value = this.value.slice(0, -1); // Only one decimal
+                if (this.value.indexOf('-') > 0) this.value = this.value.replace('-', ''); // Negative at start
+            };
+
+            cell.appendChild(input);
+            row.appendChild(cell);
+        }
+        table.appendChild(row);
+    }
+    container.appendChild(table);
+
+    // Submit Button
+    const submitButton = document.createElement('button');
+    submitButton.innerText = 'Hitung';
+    submitButton.onclick = () => handleMatrixSubmission(size, table);
+    container.appendChild(submitButton);
+}
+
+// Handle Matrix Submission and Validation
+function handleMatrixSubmission(size, table) {
+    const matrix = [];
+    let outOfRange = false;
+
+    for (let i = 0; i < size; i++) {
+        const row = [];
+        const inputs = table.rows[i].getElementsByTagName('input');
+        for (let j = 0; j < size; j++) {
+            const value = parseFloat(inputs[j].value);
+
+            if (isNaN(value)) {
+                alert('Mohon masukkan entri bilangan real pada matriks.');
+                return;
+            }
+
+            if (value > 9999 || value < -9999) outOfRange = true;
+            row.push(value);
+        }
+        matrix.push(row);
+    }
+
+    if (outOfRange) {
+        alert('Nilai entri matriks harus dalam rentang -9999 hingga 9999.');
+        return;
+    }
+
+    console.log('Matrix:', matrix);
+    LUdekom(matrix);
+}
+
+// LU Decomposition Logic
 function LUdekom(A) {
     const n = A.length;
 
-    // Helper: Create identity matrix
-    const identity = n => Array.from({ length: n }, (_, i) => 
-        Array.from({ length: n }, (_, j) => (i === j ? 1 : 0)));
-
-    let P = identity(n); // Pivot matrix
-    let L = identity(n); // Lower triangular matrix
-    let U = A.map(row => [...row]); // Copy of matrix A
+    // Initialize Matrices
+    const L = Array.from({ length: n }, (_, i) => 
+        Array.from({ length: n }, (_, j) => (i === j ? fraction(1) : fraction(0)))
+    );
+    const U = A.map(row => row.map(value => fraction(value)));
 
     for (let k = 0; k < n - 1; k++) {
-        // Find the pivot row
-        let maxRow = k;
-        let maxValue = Math.abs(U[k][k]);
-
         for (let i = k + 1; i < n; i++) {
-            if (Math.abs(U[i][k]) > maxValue) {
-                maxValue = Math.abs(U[i][k]);
-                maxRow = i;
-            }
-        }
-
-        if (maxValue < 1e-10) {
-            showResult();
-            resultNoLUDecomp();
-            throw new TypeError("Matriks tidak dapat didekomposisi LU. Pivot terlalu kecil.");
-        }
-
-        // Swap rows in U and P
-        if (maxRow !== k) {
-            [U[k], U[maxRow]] = [U[maxRow], U[k]];
-            [P[k], P[maxRow]] = [P[maxRow], P[k]];
-
-            // Swap corresponding elements in L (columns up to current step)
-            for (let j = 0; j < k; j++) {
-                [L[k][j], L[maxRow][j]] = [L[maxRow][j], L[k][j]];
-            }
-        }
-
-        // Perform Gaussian elimination
-        for (let i = k + 1; i < n; i++) {
-            const factor = U[i][k] / U[k][k];
+            const factor = U[i][k].div(U[k][k]);
             L[i][k] = factor;
             for (let j = k; j < n; j++) {
-                U[i][j] -= factor * U[k][j];
+                U[i][j] = U[i][j].sub(factor.mul(U[k][j]));
             }
         }
     }
 
-    // Output matrices
-    console.log('P (Pivot Matrix) =', P);
-    console.log('L =', L);
-    console.log('U =', U);
+    // Fraction Output
+    const fractionalL = L.map(row => row.map(value => value.toFraction()));
+    const fractionalU = U.map(row => row.map(value => value.toFraction()));
 
-    // Optional: Fraction and Decimal Outputs
-    console.log('L (Fraction) =', L.map(row => row.map(value => math.fraction(value).toFraction())));
-    console.log('U (Fraction) =', U.map(row => row.map(value => math.fraction(value).toFraction())));
-    console.log('L (Decimal) =', L.map(row => row.map(value => value.toFixed(10))));
-    console.log('U (Decimal) =', U.map(row => row.map(value => value.toFixed(10))));
+    // Decimal Output
+    const decimalL = L.map(row => row.map(value => value.valueOf()));
+    const decimalU = U.map(row => row.map(value => value.valueOf()));
 
-    // Display results
+    console.log('L (Fraction):', fractionalL);
+    console.log('U (Fraction):', fractionalU);
+    console.log('L (Decimal):', decimalL);
+    console.log('U (Decimal):', decimalU);
+
+    // Call Output Functions
     showResult();
-    resultYesLUDecomp(L, U, P);
-    historyLUDecomp(L, U, A, P);
+    resultYesLUDecomp(L, U);
+    historyLUDecomp(L, U, A);
 }
+
+// Event Listeners
+setOrdoButton.addEventListener('click', generateMatrix);
+document.getElementById('size').addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        generateMatrix();
+    }
+});
