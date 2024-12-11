@@ -1,0 +1,47 @@
+function luPivotRobust(A, tol = 1e-10, verbose = true) {
+    const n = A.length;
+
+    if (n !== A[0].length) {
+        throw new Error("Input must be a square matrix.");
+    }
+
+    // Helper: Create identity matrix
+    const identity = n => Array.from({ length: n }, (_, i) => 
+        Array.from({ length: n }, (_, j) => (i === j ? 1 : 0)));
+
+    let P = identity(n);
+    let L = identity(n);
+    let U = A.map(row => [...row]);
+    let pivotUsed = false;
+
+    for (let k = 0; k < n - 1; k++) {
+        const colValues = U.slice(k).map(row => Math.abs(row[k]));
+        const maxRow = colValues.indexOf(Math.max(...colValues)) + k;
+
+        if (Math.abs(U[k][k]) < tol) {
+            throw new Error(`Pivot value too small (below ${tol}).`);
+        }
+
+        if (maxRow !== k) {
+            pivotUsed = true;
+            [U[k], U[maxRow]] = [U[maxRow], U[k]];
+            [P[k], P[maxRow]] = [P[maxRow], P[k]];
+        }
+
+        for (let i = k + 1; i < n; i++) {
+            const factor = U[i][k] / U[k][k];
+            L[i][k] = factor;
+            for (let j = k; j < n; j++) {
+                U[i][j] -= factor * U[k][j];
+            }
+        }
+    }
+
+    if (verbose) {
+        console.log(`P: ${JSON.stringify(P)}`);
+        console.log(`L: ${JSON.stringify(L)}`);
+        console.log(`U: ${JSON.stringify(U)}`);
+    }
+
+    return { P, L, U };
+}
