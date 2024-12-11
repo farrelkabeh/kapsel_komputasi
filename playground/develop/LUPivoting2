@@ -1,0 +1,66 @@
+function LUdekom(A) {
+    const n = A.length;
+
+    // Helper: Create identity matrix
+    const identity = n => Array.from({ length: n }, (_, i) => 
+        Array.from({ length: n }, (_, j) => (i === j ? 1 : 0)));
+
+    let P = identity(n); // Pivot matrix
+    let L = identity(n); // Lower triangular matrix
+    let U = A.map(row => [...row]); // Copy of matrix A
+
+    for (let k = 0; k < n - 1; k++) {
+        // Find the pivot row
+        let maxRow = k;
+        let maxValue = Math.abs(U[k][k]);
+
+        for (let i = k + 1; i < n; i++) {
+            if (Math.abs(U[i][k]) > maxValue) {
+                maxValue = Math.abs(U[i][k]);
+                maxRow = i;
+            }
+        }
+
+        if (maxValue < 1e-10) {
+            showResult();
+            resultNoLUDecomp();
+            throw new TypeError("Matriks tidak dapat didekomposisi LU. Pivot terlalu kecil.");
+        }
+
+        // Swap rows in U and P
+        if (maxRow !== k) {
+            [U[k], U[maxRow]] = [U[maxRow], U[k]];
+            [P[k], P[maxRow]] = [P[maxRow], P[k]];
+
+            // Swap corresponding elements in L (columns up to current step)
+            for (let j = 0; j < k; j++) {
+                [L[k][j], L[maxRow][j]] = [L[maxRow][j], L[k][j]];
+            }
+        }
+
+        // Perform Gaussian elimination
+        for (let i = k + 1; i < n; i++) {
+            const factor = U[i][k] / U[k][k];
+            L[i][k] = factor;
+            for (let j = k; j < n; j++) {
+                U[i][j] -= factor * U[k][j];
+            }
+        }
+    }
+
+    // Output matrices
+    console.log('P (Pivot Matrix) =', P);
+    console.log('L =', L);
+    console.log('U =', U);
+
+    // Optional: Fraction and Decimal Outputs
+    console.log('L (Fraction) =', L.map(row => row.map(value => math.fraction(value).toFraction())));
+    console.log('U (Fraction) =', U.map(row => row.map(value => math.fraction(value).toFraction())));
+    console.log('L (Decimal) =', L.map(row => row.map(value => value.toFixed(10))));
+    console.log('U (Decimal) =', U.map(row => row.map(value => value.toFixed(10))));
+
+    // Display results
+    showResult();
+    resultYesLUDecomp(L, U, P);
+    historyLUDecomp(L, U, A, P);
+}
