@@ -48,14 +48,11 @@ function LUdekom(A) {
         }
     }
 
-    // Output matrices
-    console.log('P (Pivot Matrix) =', P);
-    console.log('L =', L);
-    console.log('U =', U);
-
     // Optional: Fraction and Decimal Outputs
-    console.log('L (Fraction) =', L.map(row => row.map(value => math.fraction(value).toFraction())));
-    console.log('U (Fraction) =', U.map(row => row.map(value => math.fraction(value).toFraction())));
+    const LFraction = L.map(row => row.map(value => math.fraction(value).toFraction()));
+    const UFraction = U.map(row => row.map(value => math.fraction(value).toFraction()));
+    console.log('L (Fraction) =', LFraction);
+    console.log('U (Fraction) =', UFraction);
     console.log('L (Decimal) =', L.map(row => row.map(value => value.toFixed(10))));
     console.log('U (Decimal) =', U.map(row => row.map(value => value.toFixed(10))));
 
