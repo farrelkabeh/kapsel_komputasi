@@ -96,17 +96,16 @@ function handleMatrixSubmission(size, table) {
     LUdekom(matrix);
 }
 
-// LU Decomposition Logic
-// LU Decomposition Logic
 function LUdekom(A) {
     const n = A.length;
 
-    // Helper: Create identity matrix
-    const identity = n => Array.from({ length: n }, (_, i) => 
-        Array.from({ length: n }, (_, j) => (i === j ? 1 : 0)));
+    // Helper: Create identity matrix with fractions
+    const identity = n => Array.from({ length: n }, (_, i) =>
+        Array.from({ length: n }, (_, j) => math.fraction(i === j ? 1 : 0))
+    );
 
     let P = identity(n); // Pivot matrix
-    let L = identity(n); // Lower triangular matrix
+    let L = identity(n); // Lower triangular matrix as fractions
     let U = A.map(row => row.map(value => math.fraction(value))); // Copy of matrix A as fractions
 
     for (let k = 0; k < n - 1; k++) {
@@ -140,32 +139,24 @@ function LUdekom(A) {
         // Perform Gaussian elimination
         for (let i = k + 1; i < n; i++) {
             const factor = math.divide(U[i][k], U[k][k]);
-            L[i][k] = factor;
+            L[i][k] = factor; // Ensure L remains as fractions
             for (let j = k; j < n; j++) {
                 U[i][j] = math.subtract(U[i][j], math.multiply(factor, U[k][j]));
             }
         }
     }
 
-    // Keluaran dalam bentuk pecahan
-    console.log('L =', L.map(row => row.map(value => value.toFraction())));
-    console.log('U =', U.map(row => row.map(value => value.toFraction())));
-
-    // Keluaran dalam bentuk desimal
-    console.log('L (Desimal) =', L.map(row => row.map(value => value.valueOf())));
-    console.log('U (Desimal) =', U.map(row => row.map(value => value.valueOf())));
-
-    console.log(A);
-    console.log(L);
-    console.log(U);
+    // Output matrices in fractions and decimals
+    console.log('L (Fraction) =', L.map(row => row.map(value => value.toFraction())));
+    console.log('U (Fraction) =', U.map(row => row.map(value => value.toFraction())));
+    console.log('L (Decimal) =', L.map(row => row.map(value => value.valueOf())));
+    console.log('U (Decimal) =', U.map(row => row.map(value => value.valueOf())));
 
     triggerModal();
     removeContent('modal-box-content');
     hideHistory();
-    resultYesLUDecomp(L,U);
+    resultYesLUDecomp(L, U, P);
     historyLUDecomp(L, U, A);
-
-    resultYesLUDecomp(L, U);
 }
 
 function resultYesLUDecomp(L, U) {
