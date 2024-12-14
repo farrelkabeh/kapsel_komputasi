@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeCalc</title>
+    <link rel="stylesheet" href="static/style.css">
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.3.0/math.min.js"></script>
+</head>
+<body>
+    <div class="main-header hidden" style="--order:0;margin-bottom: 0;">
+        <!-- Regular -->
+        <div class="header-buttons-container hidden">
+            <div class="hidden" style="--order:0.5;"><div class="header-buttons"><a href="#MainBody" onclick="LUDecomp();">LU Decomposition</a></div></div>
+            <div class="hidden" style="--order:1;"><div class="header-buttons"><a>Cholesky Decomposition</a></div></div>
+            <div class="hidden" style="--order:1.5;"><div class="header-buttons"><a>Systems of Linear Equation Solver</a></div></div>
+            <div class="hidden" style="--order:2;"><div class="header-buttons"><a onclick="history();">History</a></div></div>
+        </div>
+        
+    </div>
+
+    <!-- HAMBURGER MENU @ Viewport Width -->
+    <div class="ahhh" style="z-index: 5;">
+        <div class="mobile-display show">
+            <div class="menu-toggle" id="menuToggle" aria-expanded="false">
+                <div class="bar bar1"></div>
+                <div class="bar bar2"></div>
+                <div class="bar bar3"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- HAMBURGER CONTENT -->
+    <!-- Hamburger Content Section -->
+    <div class="hamburger-content" id="hamburgerContent" style="z-index: 3;">
+        <ul>
+            <li><a class="hamburger-content-buttons" href="#MainBody" id="" onclick="LUDecomp();">LU Decomposition</a></li>
+            <li><a class="hamburger-content-buttons" href="javascript:void(0);" id="">Cholesky Decomposition</a></li>
+            <li><a class="hamburger-content-buttons" href="javascript:void(0);" id="">Systems of Linear Equation Solver</a></li>
+            <li><a class="hamburger-content-buttons" href="javascript:void(0);" id="" onclick="history();">History</a></li>
+        </ul>
+    </div>
+
+    <!-- MAIN MODAL (ALERTS/DISPLAY RESULTS) -->
+    <div class="modal-bg">
+        <div class="modal-container">
+            <div class="modal-box">
+                <div class="modal-box-header" style="padding-bottom: 1rem;">
+                    <!-- Display modal header text here -->
+                    
+                </div>
+                <hr style="margin: 0;padding: 0;border: none;height: 0;background:none;">
+                <div class="modal-whole-container" style="overflow: auto;max-height: 50vh;">
+                    <div class="modal-box-content">
+                        <!-- Display content here, e.g Results, etc. -->
+                        
+    
+                        
+                    </div>
+                    <div class="modal-box-history" style="display: none;">
+                        <!-- History -->
+    
+    
+    
+                    </div>
+                    <div class="modal-box-chart-analytics" style="display: none;">
+                        Chart
+                    </div>
+                </div>
+                <div class="modal-box-button">
+                    <a onclick="triggerModal();hideHistory();hideAnalytics();">Kembali</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN BODY -->
+    <section id="MainBody" style="padding-top: 1rem;">
+        <div class="main-body hidden" style="--order:0.5;margin-top: 0;">
+            <!-- Starter Content -->
+            <div id="starterContent" class="starter hidden" style="text-align:center;width: 100%;--order:0.5;">
+                <div class="starter-title hidden" style="text-align:center;width: 100%;order: 0.25;">
+                    <strong>Welcome to DeCalc&trade;</strong>
+                </div>
+                <!-- <hr> -->
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-body-content">
+                <!-- Placeholder for Starters -->
+                <div class="hidden" style="--order:1;text-align: center;padding-top: 1rem;">
+                    <div class="placeholder" style="padding: 0.5rem 0;">
+                        To get started, click on the following available calculators in the menu above.
+                    </div>
+                    <hr style="border: 0.1px solid var(--secondary-color);background-color: transparent;margin: 0.5rem 3.5rem;">
+                    <div id="quote" class="hidden" style="--order:1;padding-top: 0.5rem;padding-bottom: 0.5rem;padding-left: 15vw;padding-right: 15vw;font-style: italic;">
+                        
+                    </div>
+                    <div id="author" class="hidden" style="--order:1.75;padding-bottom: 0.5rem;">
+                        
+                    </div>
+                </div>
+                <!-- Insert Main Content Here -->
+
+            </div>
+
+            <!-- Main Information -->
+            <div class="main-body-information hidden" style="--order:1.75;">
+                Main Body Information (Insert Accordion Menu Here)
+            </div>
+        </div>
+    </section>
+
+    <!-- Analytics -->
+    <div class="analytic-button-part">
+        <div class="hidden" style="--order:1;">
+            <div class="analytic-buttons"><a onclick="analytics()">Site Analytics</a></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="main-footer hidden">
+        <div class="copyright" style="height: 100%;width: 100%;text-align: center;color:var(--secondary-color);display: flex;justify-content: center;align-items: center;">
+            &copy Kelompok Kapita Seleksi Komputasi - 2024
+        </div>
+    </div>
+
+    <!-- Clickable question corner -->
+    <div class="question">
+        <a><i class="fa fa-question-circle" aria-hidden="true"></i></a>
+    </div>
+
+    <!-- Modal -->
+
+
+
+    <!-- Scripts -->
+    <script src="static/javascript/app.js"></script>
+    <script src="static/javascript/debug.js"></script>
+    <script src="static/javascript/LU.js"></script>
+    <script src="static/javascript/history.js"></script>
+
+    <!-- Script to Fetch API (Quotes) -->
+    <script>
+        const quote = document.getElementById("quote");
+        const author = document.getElementById("author");
+    
+        const api_url = "https://api.quotable.io/random";
+    
+        async function getquote(url) {
+            const response = await fetch(url);
+            var data = await response.json();
+    
+            // Add quotation marks around the quote
+            quote.innerHTML = `"${data.content}"`;
+    
+            // Add hyphen and space before the author
+            author.innerHTML = `- ${data.author}`;
+        }
+    
+        getquote("https://api.quotable.io/random");
+    </script>    
+</body>
+</html>
