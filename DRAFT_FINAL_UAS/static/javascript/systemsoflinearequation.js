@@ -94,7 +94,7 @@ function generateMatrixSystemsDecomp() {
 
     // Create the "Hitung" button
     const submitButton = document.createElement('button');
-    submitButton.innerText = 'Hitung';
+    submitButton.innerText = 'Calculate';
     submitButton.style.marginTop = '1rem';
     submitButton.onclick = function () {
         const A = [];
