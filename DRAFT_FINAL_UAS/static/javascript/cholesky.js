@@ -100,38 +100,41 @@ function formatValue(value) {
 function CholeskyDekom(A) {
     const n = A.length;
 
+    // Create a deep copy of A to avoid modifying the original matrix
+    const A_copy = A.map(row => row.slice());
+
+    // Initialize L matrix
+    const L = Array.from({ length: n }, () => Array(n).fill(math.fraction(0)));
+
     // Check symmetry
     for (let i = 0; i < n; i++) {
         for (let j = i + 1; j < n; j++) {
-            if (!math.equal(A[i][j], A[j][i])) {
-                alert('Matrix is not symmetric. Cholesky decomposition cannot be performed.');
+            if (!math.equal(A_copy[i][j], A_copy[j][i])) {
+                alert("Matrix is not symmetric. Cholesky decomposition cannot be performed.");
                 throw new TypeError("Matrix is not symmetric.");
             }
         }
     }
 
-    // Initialize L matrix
-    const L = Array.from({ length: n }, () => Array(n).fill(math.fraction(0)));
-
     for (let k = 0; k < n; k++) {
         // Check if the diagonal element is positive
-        if (A[k][k] <= 0) { // Use native JavaScript comparison
-            alert('Matrix is not positive definite. Cholesky decomposition cannot be performed.');
+        if (A_copy[k][k] <= 0) {
+            alert(`Matrix is not positive definite. Cholesky decomposition cannot be performed. Diagonal element A[${k}][${k}] = ${A_copy[k][k]} is not positive.`);
             throw new TypeError("Matrix is not positive definite.");
         }
 
         // Compute the diagonal element
-        L[k][k] = math.sqrt(A[k][k]);
+        L[k][k] = math.sqrt(A_copy[k][k]);
 
         // Compute the sub-diagonal elements
         for (let i = k + 1; i < n; i++) {
-            L[i][k] = math.divide(A[i][k], L[k][k]);
+            L[i][k] = math.divide(A_copy[i][k], L[k][k]);
         }
 
-        // Update the matrix A
+        // Update the copied matrix A
         for (let i = k + 1; i < n; i++) {
             for (let j = k + 1; j <= i; j++) {
-                A[i][j] = math.subtract(A[i][j], math.multiply(L[i][k], L[j][k]));
+                A_copy[i][j] = math.subtract(A_copy[i][j], math.multiply(L[i][k], L[j][k]));
             }
         }
     }
