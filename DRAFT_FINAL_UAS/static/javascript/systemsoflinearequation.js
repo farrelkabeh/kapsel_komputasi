@@ -148,7 +148,7 @@ function generateMatrixSystemsDecomp() {
         removeContent('modal-box-content');
         hideHistory();
         resultYesSystems(A, b, x);
-        // historyLUDecomp(L, U, P, A);
+        historySystems(A, b, x);
     };
 
     container.appendChild(submitButton);
