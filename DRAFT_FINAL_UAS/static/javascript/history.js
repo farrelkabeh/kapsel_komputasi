@@ -306,7 +306,7 @@ function historySystems(A, b, x) {
     // Function to create a table for a given matrix/vector
     const createMatrixTable = (matrix, caption) => {
         const table = document.createElement('table');
-        table.innerHTML = `<caption>P*${caption}</caption>`;
+        table.innerHTML = `<caption>${caption}</caption>`;
         matrix.forEach(row => {
             const tr = document.createElement('tr');
             (Array.isArray(row) ? row : [row]).forEach(value => {
@@ -338,7 +338,7 @@ function historySystems(A, b, x) {
 
     x.forEach((value, idx) => {
         const listItem = document.createElement('li');
-        listItem.textContent = `x${idx + 1} = ${formatValue(value)}`;
+        listItem.innerHTML = `x<sub>${idx + 1}</sub> = ${formatValue(value)}`;
         solutionList.appendChild(listItem);
     });
 
@@ -371,4 +371,3 @@ function getCurrentTimestamp() {
         second: '2-digit',
     });
 }
-
