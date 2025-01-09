@@ -4,7 +4,7 @@ function generateMatrix() {
     container.innerHTML = ''; // hapus matriks sebelumnya
 
     if (size < 2 || size > 5 || isNaN(size)) {
-        alert('Ordo matriks harus di antara 2–5.');
+        alert('Dimension of row and column must be between 2 and 5 (inclusive).');
         return;
     }
 
@@ -37,7 +37,7 @@ function generateMatrix() {
 
     // bikin tombol untuk kirim (submit)
     const submitButton = document.createElement('button');
-    submitButton.innerText = 'Hitung';
+    submitButton.innerText = 'Calculate';
     submitButton.onclick = function() {
         const A = [];
         let outOfRange = false;
@@ -49,7 +49,7 @@ function generateMatrix() {
                 const value = parseFloat(inputs[j].value);
                 
                 if (isNaN(value)) {
-                    alert('Mohon masukkan entri bilangan real pada matriks.');
+                    alert('Matrix entry must be numerical.');
                     return;
                 }
                 
@@ -65,7 +65,7 @@ function generateMatrix() {
 
         // peringatan jika ada nilai di luar rentang (-9999, 9999)
         if (outOfRange) {
-            alert('Nilai entri matriks harus dalam rentang -9999 hingga 9999.');
+            alert('Matrix entry must be between -9999 and 9999.');
             return;
         }
 
@@ -80,88 +80,65 @@ const { fraction } = math;
 
 function LUdekom(A) {
     const n = A.length;
-    const L = Array.from({ length: n }, (_, i) => 
-        Array.from({ length: n }, (_, j) => (i === j ? fraction(1) : fraction(0)))
+
+    // Helper: Create identity matrix with fractions
+    const identity = n => Array.from({ length: n }, (_, i) =>
+        Array.from({ length: n }, (_, j) => math.fraction(i === j ? 1 : 0))
     );
-    const U = A.map(row => row.map(value => fraction(value)));
 
-    // Mekanika dari teorema LU
-    function deter(B, peng = 1) { // Fungsi determinan dengan rekursif (kofaktor)
-        const ukuran = B.length;
-        if (ukuran === 1) {
-            return peng * B[0][0];
-        } else {
-            let tanda = -1;
-            let jawab = 0;
-            for (let i = 0; i < ukuran; i++) {
-                const boneka = [];
-                for (let j = 1; j < ukuran; j++) {
-                    const tamb = [];
-                    for (let k = 0; k < ukuran; k++) {
-                        if (k !== i) {
-                            tamb.push(B[j][k]);
-                        }
-                    }
-                    boneka.push(tamb);
-                }
-                tanda *= -1;
-                jawab += peng * tanda * B[0][i] * deter(boneka);
+    let P = identity(n); // Pivot matrix
+    let L = identity(n); // Lower triangular matrix as fractions
+    let U = A.map(row => row.map(value => math.fraction(value))); // Copy of matrix A as fractions
+
+    for (let k = 0; k < n - 1; k++) {
+        // Find the pivot row
+        let maxRow = k;
+        let maxValue = math.abs(U[k][k]);
+
+        for (let i = k + 1; i < n; i++) {
+            if (math.abs(U[i][k]) > maxValue) {
+                maxValue = math.abs(U[i][k]);
+                maxRow = i;
             }
-            return jawab;
         }
-    }
 
-    function detsub(A) { // Fungsi minor utama terdepan
-        const boneka = new Array(A.length).fill(0);
-        for (let l = 0; l < A.length; l++) {
-            const submatriks = A.slice(0, l + 1).map(row => row.slice(0, l + 1));
-            boneka[l] = deter(submatriks);
+        if (math.smaller(maxValue, math.fraction(1e-10))) {
+            resultNoLUDecomp();
+            throw new TypeError("LU decomposition failed. Some pivot values are too small.");
         }
-        return boneka;
-    }
 
-    function cekdetsub_lu(X) { // Fungsi untuk memeriksa apakah minor utama terdepan nol atau tidak
-        return detsub(X).some(value => value === 0) ? 1 : 0;
-    }
+        // Swap rows in U and P
+        if (maxRow !== k) {
+            [U[k], U[maxRow]] = [U[maxRow], U[k]];
+            [P[k], P[maxRow]] = [P[maxRow], P[k]];
 
-    if (cekdetsub_lu(A) === 1) {
-        // showResult(); // Mengeluarkan tampilan modal - terdapat pada file result.js
-        triggerModal();
-        resultNoLUDecomp(); // Fungsi yang memberitahu pengguna bahwa matriks tidak dapat didekomposisi LU - terdapat pada file result.js
-        throw new TypeError("Matriks tidak dapat didekomposisi LU. Ada minor utama terdepan dari matriks yang nol.");
-    } else {
-        for (let k = 0; k < n - 1; k++) {
-            for (let i = k + 1; i < n; i++) {
-                const faktor = U[i][k].div(U[k][k]);
-                L[i][k] = faktor;
-                for (let j = k; j < n; j++) {
-                    U[i][j] = U[i][j].sub(faktor.mul(U[k][j]));
-                }
+            // Swap corresponding elements in L (columns up to current step)
+            for (let j = 0; j < k; j++) {
+                [L[k][j], L[maxRow][j]] = [L[maxRow][j], L[k][j]];
+            }
+        }
+
+        // Perform Gaussian elimination
+        for (let i = k + 1; i < n; i++) {
+            const factor = math.divide(U[i][k], U[k][k]);
+            L[i][k] = factor; // Ensure L remains as fractions
+            for (let j = k; j < n; j++) {
+                U[i][j] = math.subtract(U[i][j], math.multiply(factor, U[k][j]));
             }
         }
     }
 
-    // Keluaran dalam bentuk pecahan
-    console.log('L =', L.map(row => row.map(value => value.toFraction())));
-    console.log('U =', U.map(row => row.map(value => value.toFraction())));
-
-    // Keluaran dalam bentuk desimal
-    console.log('L (Desimal) =', L.map(row => row.map(value => value.valueOf())));
-    console.log('U (Desimal) =', U.map(row => row.map(value => value.valueOf())));
-
-    console.log(A);
-    console.log(L);
-    console.log(U);
+    // Output matrices in fractions and decimals
+    console.log('L (Fraction) =', L.map(row => row.map(value => value.toFraction())));
+    console.log('U (Fraction) =', U.map(row => row.map(value => value.toFraction())));
+    console.log('L (Decimal) =', L.map(row => row.map(value => value.valueOf())));
+    console.log('U (Decimal) =', U.map(row => row.map(value => value.valueOf())));
 
     triggerModal();
     removeContent('modal-box-content');
     hideHistory();
-    resultYesLUDecomp(L,U);
-    historyLUDecomp(L, U, A);
-
-    // showResult();
-    // resultYesLUDecomp(L, U);
-    // historyLUDecomp(L, U, A);
+    resultYesLUDecomp(L, U, P, A);
+    historyLUDecomp(L, U, P, A);
 }
 
 function resultNoLUDecomp() {
@@ -172,101 +149,122 @@ function resultNoLUDecomp() {
     removeContent('modal-box-content');
     modalBoxes.forEach(modalBox => { // perulangan untuk setiap entri
         const newParagraph = document.createElement('p');
-        newParagraph.textContent = 'Matriks tidak dapat didekomposisi LU. Ada minor utama terdepan dari matriks yang nol.';
+        newParagraph.textContent = 'LU decomposition failed. There is a zero pivot.';
         modalBox.appendChild(newParagraph);
     });
 }
 
-function resultYesLUDecomp(L, U) {
+function resultYesLUDecomp(L, U, P, A) {
     const headerModal = document.querySelector('.modal-box-header');
     headerModal.innerHTML = 'LU Decomposition';
 
     const modalBox = document.querySelector('.modal-box-content');
+    modalBox.innerHTML = ''; // Clear previous content
 
-    // Fungsi untuk desimal supaya maksimum 3 angka di belakang koma
-    function formatNumber(num) {
-        const strNum = num.toString();
-        const decimalIndex = strNum.indexOf('.');
-        if (decimalIndex === -1) {
-            return num; // kalau gak desimal ya bilangan bulat saja
-        }
-        
-        const integerPart = strNum.slice(0, decimalIndex);
-        const decimalPart = strNum.slice(decimalIndex + 1);
+    // Create toggle buttons
+    const toggleContainer = document.createElement('div');
+    toggleContainer.className = 'toggle-container';
 
-        if (integerPart.length >= 3) {
-            // gunakan 3 angka di belakang koma
-            return num.toFixed(3);
-        } else if (integerPart.length === 2) {
-            // kalau bagian bilangan bulat hanya 2 digit maka maksimum hanya 2 desimal
-            return num.toFixed(2);
-        } else {
-            // kalau bagian bilangan bulat hanya 1 digit maka maksimum hanya 1 desimal
-            return num.toFixed(1);
-        }
-    }
+    const fractionButton = document.createElement('button');
+    fractionButton.textContent = 'Fraction';
+    fractionButton.className = 'fraction-toggle active'; // Default active
+    fractionButton.onclick = () => updateMatrixDisplay('fraction');
 
-    // Tabel L dengan entri pecahan (kalau ada)
-    const lTableFrac = document.createElement('table');
-    lTableFrac.className = 'lTable';
-    lTableFrac.innerHTML = '<caption>L</caption>';
-    L.forEach(row => {
-        const tr = document.createElement('tr');
-        row.forEach(value => {
-            const td = document.createElement('td');
-            td.textContent = value.toFraction(); // entri pecahan
-            tr.appendChild(td);
+    const decimalButton = document.createElement('button');
+    decimalButton.textContent = 'Decimal';
+    decimalButton.className = 'decimal-toggle';
+    decimalButton.onclick = () => updateMatrixDisplay('decimal');
+
+    toggleContainer.appendChild(fractionButton);
+    toggleContainer.appendChild(decimalButton);
+    modalBox.appendChild(toggleContainer);
+
+    // Function to format matrix values
+    const formatValue = (value, format) =>
+        format === 'fraction'
+            ? math.isFraction(value) ? value.toFraction() : value
+            : math.isFraction(value) ? value.valueOf().toFixed(6) : value.toFixed(6);
+
+    // Function to update matrix display
+    const updateMatrixDisplay = (format) => {
+        pTable.innerHTML = '<caption>P</caption>';
+        aTable.innerHTML = '<caption>A</caption>';
+        lTable.innerHTML = '<caption>L</caption>';
+        uTable.innerHTML = '<caption>U</caption>';
+
+        // Populate P table
+        P.forEach(row => {
+            const tr = document.createElement('tr');
+            row.forEach(value => {
+                const td = document.createElement('td');
+                td.textContent = formatValue(value, format);
+                tr.appendChild(td);
+            });
+            pTable.appendChild(tr);
         });
-        lTableFrac.appendChild(tr);
-    });
 
-    // Tabel U dengan entri pecahan (kalau ada)
-    const uTableFrac = document.createElement('table');
-    uTableFrac.className = 'uTable';
-    uTableFrac.innerHTML = '<caption>U</caption>';
-    U.forEach(row => {
-        const tr = document.createElement('tr');
-        row.forEach(value => {
-            const td = document.createElement('td');
-            td.textContent = value.toFraction(); // entri pecahan
-            tr.appendChild(td);
+        // Populate A table
+        A.forEach(row => {
+            const tr = document.createElement('tr');
+            row.forEach(value => {
+                const td = document.createElement('td');
+                td.textContent = formatValue(value, format);
+                tr.appendChild(td);
+            });
+            aTable.appendChild(tr);
         });
-        uTableFrac.appendChild(tr);
-    });
 
-    // Tabel L dengan entri desimal
-    const lTableDec = document.createElement('table');
-    lTableDec.className = 'lTable';
-    lTableDec.innerHTML = '<caption>L (Desimal)</caption>';
-    L.forEach(row => {
-        const tr = document.createElement('tr');
-        row.forEach(value => {
-            const td = document.createElement('td');
-            td.textContent = formatNumber(value.valueOf()); // entri desimal
-            td.style = "min-width:4rem;"
-            tr.appendChild(td);
+        // Populate L table
+        L.forEach(row => {
+            const tr = document.createElement('tr');
+            row.forEach(value => {
+                const td = document.createElement('td');
+                td.textContent = formatValue(value, format);
+                tr.appendChild(td);
+            });
+            lTable.appendChild(tr);
         });
-        lTableDec.appendChild(tr);
-    });
 
-    // Tabel U dengan entri desimal
-    const uTableDec = document.createElement('table');
-    uTableDec.className = 'uTable';
-    uTableDec.innerHTML = '<caption>U (Desimal)</caption>';
-    U.forEach(row => {
-        const tr = document.createElement('tr');
-        row.forEach(value => {
-            const td = document.createElement('td');
-            td.textContent = formatNumber(value.valueOf()); // entri desimal
-            td.style = "min-width:4rem;"
-            tr.appendChild(td);
+        // Populate U table
+        U.forEach(row => {
+            const tr = document.createElement('tr');
+            row.forEach(value => {
+                const td = document.createElement('td');
+                td.textContent = formatValue(value, format);
+                tr.appendChild(td);
+            });
+            uTable.appendChild(tr);
         });
-        uTableDec.appendChild(tr);
-    });
 
-    // tambahkan tabel ke modalBox
-    modalBox.appendChild(lTableFrac);
-    modalBox.appendChild(uTableFrac);
-    modalBox.appendChild(lTableDec);
-    modalBox.appendChild(uTableDec);
+        // Update active toggle state
+        fractionButton.classList.toggle('active', format === 'fraction');
+        decimalButton.classList.toggle('active', format === 'decimal');
+    };
+
+    // Create P, A, L, and U tables
+    const pTable = document.createElement('table');
+    pTable.className = 'pTable';
+
+    const aTable = document.createElement('table');
+    aTable.className = 'aTable';
+
+    const equalSign = document.createElement('div');
+    equalSign.className = 'equal-sign';
+    equalSign.textContent = '=';
+
+    const lTable = document.createElement('table');
+    lTable.className = 'lTable';
+
+    const uTable = document.createElement('table');
+    uTable.className = 'uTable';
+
+    // Append tables and equal sign in the desired order
+    modalBox.appendChild(pTable);
+    modalBox.appendChild(aTable);
+    modalBox.appendChild(equalSign); // Add equal sign
+    modalBox.appendChild(lTable);
+    modalBox.appendChild(uTable);
+
+    // Initial display as fractions
+    updateMatrixDisplay('fraction');
 }
