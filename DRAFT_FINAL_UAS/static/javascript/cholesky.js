@@ -4,7 +4,7 @@ function generateMatrixCholesky() {
     container.innerHTML = ''; // hapus matriks sebelumnya
 
     if (size < 2 || size > 5 || isNaN(size)) {
-        alert('Ordo matriks harus di antara 2–5.');
+        alert('Dimension of row and column must be between 2 and 5 (inclusive).');
         return;
     }
 
@@ -49,7 +49,7 @@ function generateMatrixCholesky() {
                 const value = parseFloat(inputs[j].value);
                 
                 if (isNaN(value)) {
-                    alert('Mohon masukkan entri bilangan real pada matriks.');
+                    alert('Matrix entry must be a numerical.');
                     return;
                 }
                 
@@ -65,7 +65,7 @@ function generateMatrixCholesky() {
 
         // peringatan jika ada nilai di luar rentang (-9999, 9999)
         if (outOfRange) {
-            alert('Nilai entri matriks harus dalam rentang -9999 hingga 9999.');
+            alert('Matrix entry must be between -9999 and 9999.');
             return;
         }
 
@@ -104,7 +104,7 @@ function CholeskyDekom(A) {
     for (let i = 0; i < n; i++) {
         for (let j = i + 1; j < n; j++) {
             if (!math.equal(A[i][j], A[j][i])) {
-                alert("Matrix is not symmetric. Cholesky decomposition cannot be performed.");
+                alert('Matrix is not symmetric. Cholesky decomposition cannot be performed.');
                 throw new TypeError("Matrix is not symmetric.");
             }
         }
@@ -116,7 +116,7 @@ function CholeskyDekom(A) {
     for (let k = 0; k < n; k++) {
         // Check if the diagonal element is positive
         if (A[k][k] <= 0) { // Use native JavaScript comparison
-            alert(`Matrix is not positive definite. Cholesky decomposition cannot be performed. Diagonal element A[${k}][${k}] = ${A[k][k]} is not positive.`);
+            alert('Matrix is not positive definite. Cholesky decomposition cannot be performed.');
             throw new TypeError("Matrix is not positive definite.");
         }
 
@@ -153,13 +153,13 @@ function CholeskyDekom(A) {
 
 function resultNoLUDecomp() {
     const headerModal = document.querySelector('.modal-box-header');
-    headerModal.innerHTML = 'LU Decomposition';
+    headerModal.innerHTML = 'Cholesky Decomposition';
 
     const modalBoxes = document.querySelectorAll('.modal-box-content');
     removeContent('modal-box-content');
     modalBoxes.forEach(modalBox => { // perulangan untuk setiap entri
         const newParagraph = document.createElement('p');
-        newParagraph.textContent = 'Matriks tidak dapat didekomposisi LU. Ada minor utama terdepan dari matriks yang nol.';
+        newParagraph.textContent = 'Cholesky decomposition failed. There are some non-positive pivot.';
         modalBox.appendChild(newParagraph);
     });
 }
