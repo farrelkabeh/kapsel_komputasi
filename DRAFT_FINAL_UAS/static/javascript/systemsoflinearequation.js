@@ -135,10 +135,59 @@ function generateMatrixSystemsDecomp() {
             return;
         }
 
-        console.log('Matrix A:', A);
-        console.log('Vector b:', b);
+        // console.log('Matrix A:', A);
+        // console.log('Vector b:', b);
 
         const x = sol(A,b);
+
+        const n = A.length;
+
+        // Helper: Create identity matrix with fractions
+        const identity = n => Array.from({ length: n }, (_, i) =>
+            Array.from({ length: n }, (_, j) => math.fraction(i === j ? 1 : 0))
+        );
+
+        let P = identity(n); // Pivot matrix
+        let L = identity(n); // Lower triangular matrix as fractions
+        let U = A.map(row => row.map(value => math.fraction(value))); // Copy of matrix A as fractions
+
+        for (let k = 0; k < n - 1; k++) {
+            // Find the pivot row
+            let maxRow = k;
+            let maxValue = math.abs(U[k][k]);
+
+            for (let i = k + 1; i < n; i++) {
+                if (math.abs(U[i][k]) > maxValue) {
+                    maxValue = math.abs(U[i][k]);
+                    maxRow = i;
+                }
+            }
+
+            if (math.smaller(maxValue, math.fraction(1e-10))) {
+                resultNoLUDecomp();
+                throw new TypeError("Matriks tidak dapat didekomposisi LU. Pivot terlalu kecil.");
+            }
+
+            // Swap rows in U and P
+            if (maxRow !== k) {
+                [U[k], U[maxRow]] = [U[maxRow], U[k]];
+                [P[k], P[maxRow]] = [P[maxRow], P[k]];
+
+                // Swap corresponding elements in L (columns up to current step)
+                for (let j = 0; j < k; j++) {
+                    [L[k][j], L[maxRow][j]] = [L[maxRow][j], L[k][j]];
+                }
+            }
+
+            // Perform Gaussian elimination
+            for (let i = k + 1; i < n; i++) {
+                const factor = math.divide(U[i][k], U[k][k]);
+                L[i][k] = factor; // Ensure L remains as fractions
+                for (let j = k; j < n; j++) {
+                    U[i][j] = math.subtract(U[i][j], math.multiply(factor, U[k][j]));
+                }
+            }
+        }
 
         // Call the LU decomposition function or solver
         // console.log(sol(A,b));
@@ -147,8 +196,8 @@ function generateMatrixSystemsDecomp() {
         triggerModal();
         removeContent('modal-box-content');
         hideHistory();
-        resultYesSystems(A, b, x);
-        historySystems(A, b, x);
+        resultYesSystems(math.multiply(P,A), math.multiply(P,b), x);
+        historySystems(math.multiply(P,A), math.multiply(P,b), x);
     };
 
     container.appendChild(submitButton);
@@ -284,7 +333,7 @@ function resultYesSystems(A, b, x) {
     // Create table for matrix A
     const aTable = document.createElement('table');
     aTable.className = 'aTable';
-    aTable.innerHTML = '<caption>A</caption>';
+    aTable.innerHTML = '<caption>P*A</caption>';
 
     // Populate A table with values
     formatMatrix(A).forEach(row => {
@@ -300,7 +349,7 @@ function resultYesSystems(A, b, x) {
     // Create table for vector b
     const bTable = document.createElement('table');
     bTable.className = 'bTable';
-    bTable.innerHTML = '<caption>b</caption>';
+    bTable.innerHTML = '<caption>P*b</caption>';
 
     // Populate b table with values
     b.forEach(value => {

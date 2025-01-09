@@ -306,7 +306,7 @@ function historySystems(A, b, x) {
     // Function to create a table for a given matrix/vector
     const createMatrixTable = (matrix, caption) => {
         const table = document.createElement('table');
-        table.innerHTML = `<caption>${caption}</caption>`;
+        table.innerHTML = `<caption>P*${caption}</caption>`;
         matrix.forEach(row => {
             const tr = document.createElement('tr');
             (Array.isArray(row) ? row : [row]).forEach(value => {
