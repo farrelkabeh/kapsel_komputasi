@@ -4,7 +4,7 @@ function generateMatrixDeterminant() {
     container.innerHTML = ''; // hapus matriks sebelumnya
 
     if (size < 2 || size > 5 || isNaN(size)) {
-        alert('Ordo matriks harus di antara 2–5.');
+        alert('Dimension of row and column must be between 2 and 5 (inclusive).');
         return;
     }
 
@@ -49,7 +49,7 @@ function generateMatrixDeterminant() {
                 const value = parseFloat(inputs[j].value);
                 
                 if (isNaN(value)) {
-                    alert('Mohon masukkan entri bilangan real pada matriks.');
+                    alert('Matrix entry must be a numerical.');
                     return;
                 }
                 
@@ -65,7 +65,7 @@ function generateMatrixDeterminant() {
 
         // peringatan jika ada nilai di luar rentang (-9999, 9999)
         if (outOfRange) {
-            alert('Nilai entri matriks harus dalam rentang -9999 hingga 9999.');
+            alert('Matrix entry must be between -9999 and 9999.');
             return;
         }
 
