@@ -22,7 +22,7 @@ function historyLUDecomp(L, U, P, A) {
     const containerParagraph = document.createElement('p');
     containerParagraph.className = 'container-bridge';
     containerParagraph.style = 'color:#909090;';
-    containerParagraph.textContent = `Perhitungan ${index + 1}: (${getCurrentTimestamp()})`;
+    containerParagraph.textContent = `Calculation: ${index + 1}: (${getCurrentTimestamp()})`;
 
     const historyTableDiv = document.createElement('div');
     historyTableDiv.className = 'history-table';
@@ -119,7 +119,7 @@ function historyCholeskyDecomp(L, A) {
     const containerParagraph = document.createElement('p');
     containerParagraph.className = 'container-bridge';
     containerParagraph.style = 'color:#909090;';
-    containerParagraph.textContent = `Perhitungan ${index + 1}: (${getCurrentTimestamp()})`;
+    containerParagraph.textContent = `Calculation: ${index + 1}: (${getCurrentTimestamp()})`;
 
     const historyTableDiv = document.createElement('div');
     historyTableDiv.className = 'history-table';
@@ -206,7 +206,7 @@ function historyDeterminant(A) {
     const containerParagraph = document.createElement('p');
     containerParagraph.className = 'container-bridge';
     containerParagraph.style = 'color:#909090;';
-    containerParagraph.textContent = `Perhitungan ${index + 1}: (${getCurrentTimestamp()})`;
+    containerParagraph.textContent = `Calculation: ${index + 1}: (${getCurrentTimestamp()})`;
 
     const historyTableDiv = document.createElement('div');
     historyTableDiv.className = 'history-table';
@@ -289,7 +289,7 @@ function historySystems(A, b, x) {
     const containerParagraph = document.createElement('p');
     containerParagraph.className = 'container-bridge';
     containerParagraph.style = 'color:#909090;';
-    containerParagraph.textContent = `Perhitungan ${index + 1}: (${getCurrentTimestamp()})`;
+    containerParagraph.textContent = `Calculation: ${index + 1}: (${getCurrentTimestamp()})`;
 
     const historyTableDiv = document.createElement('div');
     historyTableDiv.className = 'history-table';
@@ -371,5 +371,4 @@ function getCurrentTimestamp() {
         second: '2-digit',
     });
 }
-
 
