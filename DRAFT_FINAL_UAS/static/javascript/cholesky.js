@@ -37,7 +37,7 @@ function generateMatrixCholesky() {
 
     // bikin tombol untuk kirim (submit)
     const submitButton = document.createElement('button');
-    submitButton.innerText = 'Hitung';
+    submitButton.innerText = 'Calculate';
     submitButton.onclick = function() {
         const A = [];
         let outOfRange = false;
