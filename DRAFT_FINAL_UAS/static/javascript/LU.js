@@ -1,41 +1,13 @@
-// Calculator Feature Initialization
-const selectedOp = document.querySelector('.operator-get');
-const opBox = document.querySelectorAll('.operator-box');
-const usedOperator = document.querySelector('.used-operator p');
-const setOrdoButton = document.querySelector('.set-ordo');
-const { fraction } = math;
-
-// Operation Selection
-opBox.forEach(selected => {
-    selected.addEventListener('click', function () {
-        document.querySelector('.selected')?.classList.remove("selected");
-        selected.classList.add("selected");
-        usedOperator.textContent = selected.querySelector('p').textContent;
-    });
-});
-
-// Input Box for Matrix Size
-const inputBox = document.createElement('div');
-inputBox.classList.add('matrix-input');
-document.body.appendChild(inputBox);
-
-// Matrix Size Validation
-document.getElementById('size').oninput = function () {
-    this.value = this.value.replace(/[^0-9]/g, ''); // Only allow numbers
-};
-
-// Generate Matrix Input Fields
 function generateMatrix() {
     const size = parseInt(document.getElementById('size').value);
     const container = document.getElementById('matrixContainer');
-    container.innerHTML = ''; // Clear previous matrix
+    container.innerHTML = ''; // hapus matriks sebelumnya
 
-    if (isNaN(size) || size < 2 || size > 5) {
+    if (size < 2 || size > 5 || isNaN(size)) {
         alert('Ordo matriks harus di antara 2–5.');
         return;
     }
 
-    // Create Matrix Input Table
     const table = document.createElement('table');
     for (let i = 0; i < size; i++) {
         const row = document.createElement('tr');
@@ -44,11 +16,16 @@ function generateMatrix() {
             const input = document.createElement('input');
             input.type = 'text';
 
-            // Input Validation: Only Real Numbers
-            input.oninput = function () {
+            // Validasi input agar hanya bisa bilangan real
+            input.oninput = function() {
+                // Hanya izinkan angka, titik, dan tanda minus
                 this.value = this.value.replace(/[^0-9.-]/g, '');
-                if (this.value.split('.').length > 2) this.value = this.value.slice(0, -1); // Only one decimal
-                if (this.value.indexOf('-') > 0) this.value = this.value.replace('-', ''); // Negative at start
+
+                // Pastikan hanya ada satu titik desimal
+                if (this.value.split('.').length > 2) this.value = this.value.slice(0, -1);
+
+                // Pastikan tanda minus hanya di awal
+                if (this.value.indexOf('-') > 0) this.value = this.value.replace('-', '');
             };
 
             cell.appendChild(input);
@@ -58,43 +35,48 @@ function generateMatrix() {
     }
     container.appendChild(table);
 
-    // Submit Button
+    // bikin tombol untuk kirim (submit)
     const submitButton = document.createElement('button');
     submitButton.innerText = 'Hitung';
-    submitButton.onclick = () => handleMatrixSubmission(size, table);
+    submitButton.onclick = function() {
+        const A = [];
+        let outOfRange = false;
+
+        for (let i = 0; i < size; i++) {
+            const row = [];
+            const inputs = table.rows[i].getElementsByTagName('input');
+            for (let j = 0; j < size; j++) {
+                const value = parseFloat(inputs[j].value);
+                
+                if (isNaN(value)) {
+                    alert('Mohon masukkan entri bilangan real pada matriks.');
+                    return;
+                }
+                
+                // cek apakah nilai di luar rentang (-9999, 9999)
+                if (value > 9999 || value < -9999) {
+                    outOfRange = true;
+                }
+                
+                row.push(value);
+            }
+            A.push(row);
+        }
+
+        // peringatan jika ada nilai di luar rentang (-9999, 9999)
+        if (outOfRange) {
+            alert('Nilai entri matriks harus dalam rentang -9999 hingga 9999.');
+            return;
+        }
+
+        console.log('Matrix:', A);
+        LUdekom(A); // fungsi buat LU
+    };
+
     container.appendChild(submitButton);
 }
 
-// Handle Matrix Submission and Validation
-function handleMatrixSubmission(size, table) {
-    const matrix = [];
-    let outOfRange = false;
-
-    for (let i = 0; i < size; i++) {
-        const row = [];
-        const inputs = table.rows[i].getElementsByTagName('input');
-        for (let j = 0; j < size; j++) {
-            const value = parseFloat(inputs[j].value);
-
-            if (isNaN(value)) {
-                alert('Mohon masukkan entri bilangan real pada matriks.');
-                return;
-            }
-
-            if (value > 9999 || value < -9999) outOfRange = true;
-            row.push(value);
-        }
-        matrix.push(row);
-    }
-
-    if (outOfRange) {
-        alert('Nilai entri matriks harus dalam rentang -9999 hingga 9999.');
-        return;
-    }
-
-    console.log('Matrix:', matrix);
-    LUdekom(matrix);
-}
+const { fraction } = math;
 
 function LUdekom(A) {
     const n = A.length;
@@ -155,11 +137,24 @@ function LUdekom(A) {
     triggerModal();
     removeContent('modal-box-content');
     hideHistory();
-    resultYesLUDecomp(L, U, P);
-    historyLUDecomp(L, U, A);
+    resultYesLUDecomp(L, U, P, A);
+    historyLUDecomp(L, U, P, A);
 }
 
-function resultYesLUDecomp(L, U) {
+function resultNoLUDecomp() {
+    const headerModal = document.querySelector('.modal-box-header');
+    headerModal.innerHTML = 'LU Decomposition';
+
+    const modalBoxes = document.querySelectorAll('.modal-box-content');
+    removeContent('modal-box-content');
+    modalBoxes.forEach(modalBox => { // perulangan untuk setiap entri
+        const newParagraph = document.createElement('p');
+        newParagraph.textContent = 'Matriks tidak dapat didekomposisi LU. Ada minor utama terdepan dari matriks yang nol.';
+        modalBox.appendChild(newParagraph);
+    });
+}
+
+function resultYesLUDecomp(L, U, P, A) {
     const headerModal = document.querySelector('.modal-box-header');
     headerModal.innerHTML = 'LU Decomposition';
 
@@ -184,33 +179,58 @@ function resultYesLUDecomp(L, U) {
     toggleContainer.appendChild(decimalButton);
     modalBox.appendChild(toggleContainer);
 
+    // Function to format matrix values
+    const formatValue = (value, format) =>
+        format === 'fraction'
+            ? math.isFraction(value) ? value.toFraction() : value
+            : math.isFraction(value) ? value.valueOf().toFixed(6) : value.toFixed(6);
+
     // Function to update matrix display
     const updateMatrixDisplay = (format) => {
+        pTable.innerHTML = '<caption>P</caption>';
+        aTable.innerHTML = '<caption>A</caption>';
         lTable.innerHTML = '<caption>L</caption>';
         uTable.innerHTML = '<caption>U</caption>';
 
-        const formatValue = (value) =>
-            format === 'fraction'
-                ? math.isFraction(value) ? value.toFraction() : value
-                : math.isFraction(value) ? value.valueOf().toFixed(6) : value.toFixed(6);
+        // Populate P table
+        P.forEach(row => {
+            const tr = document.createElement('tr');
+            row.forEach(value => {
+                const td = document.createElement('td');
+                td.textContent = formatValue(value, format);
+                tr.appendChild(td);
+            });
+            pTable.appendChild(tr);
+        });
 
-        // Update L table
+        // Populate A table
+        A.forEach(row => {
+            const tr = document.createElement('tr');
+            row.forEach(value => {
+                const td = document.createElement('td');
+                td.textContent = formatValue(value, format);
+                tr.appendChild(td);
+            });
+            aTable.appendChild(tr);
+        });
+
+        // Populate L table
         L.forEach(row => {
             const tr = document.createElement('tr');
             row.forEach(value => {
                 const td = document.createElement('td');
-                td.textContent = formatValue(value);
+                td.textContent = formatValue(value, format);
                 tr.appendChild(td);
             });
             lTable.appendChild(tr);
         });
 
-        // Update U table
+        // Populate U table
         U.forEach(row => {
             const tr = document.createElement('tr');
             row.forEach(value => {
                 const td = document.createElement('td');
-                td.textContent = formatValue(value);
+                td.textContent = formatValue(value, format);
                 tr.appendChild(td);
             });
             uTable.appendChild(tr);
@@ -221,13 +241,27 @@ function resultYesLUDecomp(L, U) {
         decimalButton.classList.toggle('active', format === 'decimal');
     };
 
-    // Create L and U tables
+    // Create P, A, L, and U tables
+    const pTable = document.createElement('table');
+    pTable.className = 'pTable';
+
+    const aTable = document.createElement('table');
+    aTable.className = 'aTable';
+
+    const equalSign = document.createElement('div');
+    equalSign.className = 'equal-sign';
+    equalSign.textContent = '=';
+
     const lTable = document.createElement('table');
     lTable.className = 'lTable';
 
     const uTable = document.createElement('table');
     uTable.className = 'uTable';
 
+    // Append tables and equal sign in the desired order
+    modalBox.appendChild(pTable);
+    modalBox.appendChild(aTable);
+    modalBox.appendChild(equalSign); // Add equal sign
     modalBox.appendChild(lTable);
     modalBox.appendChild(uTable);
 
