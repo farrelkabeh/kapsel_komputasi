@@ -4,7 +4,7 @@ function generateMatrix() {
     container.innerHTML = ''; // hapus matriks sebelumnya
 
     if (size < 2 || size > 5 || isNaN(size)) {
-        alert('Ordo matriks harus di antara 2–5.');
+        alert('Dimension of row and column must be between 2 and 5 (inclusive).');
         return;
     }
 
@@ -37,7 +37,7 @@ function generateMatrix() {
 
     // bikin tombol untuk kirim (submit)
     const submitButton = document.createElement('button');
-    submitButton.innerText = 'Hitung';
+    submitButton.innerText = 'Calculate';
     submitButton.onclick = function() {
         const A = [];
         let outOfRange = false;
@@ -49,7 +49,7 @@ function generateMatrix() {
                 const value = parseFloat(inputs[j].value);
                 
                 if (isNaN(value)) {
-                    alert('Mohon masukkan entri bilangan real pada matriks.');
+                    alert('Matrix entry must be numerical.');
                     return;
                 }
                 
@@ -65,7 +65,7 @@ function generateMatrix() {
 
         // peringatan jika ada nilai di luar rentang (-9999, 9999)
         if (outOfRange) {
-            alert('Nilai entri matriks harus dalam rentang -9999 hingga 9999.');
+            alert('Matrix entry must be between -9999 and 9999.');
             return;
         }
 
