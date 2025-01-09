@@ -138,11 +138,17 @@ function generateMatrixSystemsDecomp() {
         console.log('Matrix A:', A);
         console.log('Vector b:', b);
 
-        sol(A,b);
+        const x = sol(A,b);
 
         // Call the LU decomposition function or solver
         // console.log(sol(A,b));
         // LUsolve(A, b); // Replace with your solving function
+
+        triggerModal();
+        removeContent('modal-box-content');
+        hideHistory();
+        resultYesSystems(A, b, x);
+        // historyLUDecomp(L, U, P, A);
     };
 
     container.appendChild(submitButton);
@@ -244,5 +250,116 @@ function sol(A, b) {
 
     console.log(x);
     return x;
+}
+
+function resultYesSystems(A, b, x) {
+    const headerModal = document.querySelector('.modal-box-header');
+    headerModal.innerHTML = 'Sistem Persamaan Linear';
+
+    const modalBox = document.querySelector('.modal-box-content');
+    modalBox.innerHTML = ''; // Clear previous content
+
+    // Helper function to format matrix values for display
+    const formatValue = (value) => {
+        if (math.isFraction(value)) value = value.valueOf(); // Convert to decimal if fraction
+        if (Number.isInteger(value)) return value.toString(); // Return integers as is
+
+        return value.toFixed(3); // Fallback to decimal representation
+    };
+
+    // Function to format the matrix with the helper function
+    const formatMatrix = (matrix) =>
+        matrix.map(row => row.map(value => formatValue(value)));
+
+    // Create a main container div for layout
+    const mainContainer = document.createElement('div');
+    mainContainer.className = 'main-container';
+    mainContainer.style.display = 'flex'; // Use flexbox for side-by-side layout
+    mainContainer.style.justifyContent = 'center'; // Center elements horizontally
+    mainContainer.style.alignItems = 'flex-start'; // Align items at the top
+    mainContainer.style.gap = '20px'; // Add space between sections
+    mainContainer.style.width = '100%';
+    mainContainer.style.flexWrap = 'wrap'; // Allow wrapping if needed for smaller screens
+
+    // Create table for matrix A
+    const aTable = document.createElement('table');
+    aTable.className = 'aTable';
+    aTable.innerHTML = '<caption>A</caption>';
+
+    // Populate A table with values
+    formatMatrix(A).forEach(row => {
+        const tr = document.createElement('tr');
+        row.forEach(value => {
+            const td = document.createElement('td');
+            td.textContent = value;
+            tr.appendChild(td);
+        });
+        aTable.appendChild(tr);
+    });
+
+    // Create table for vector b
+    const bTable = document.createElement('table');
+    bTable.className = 'bTable';
+    bTable.innerHTML = '<caption>b</caption>';
+
+    // Populate b table with values
+    b.forEach(value => {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.textContent = formatValue(value);
+        tr.appendChild(td);
+        bTable.appendChild(tr);
+    });
+
+    // Create a container for the tables (A and b side by side)
+    const tablesContainer = document.createElement('div');
+    tablesContainer.className = 'tables-container';
+    tablesContainer.style.display = 'flex';
+    tablesContainer.style.justifyContent = 'center';
+    tablesContainer.style.alignItems = 'flex-start';
+    tablesContainer.style.gap = '20px';
+    tablesContainer.style.width = '100%';
+
+    // Append A and b tables to the tables container
+    tablesContainer.appendChild(aTable);
+    tablesContainer.appendChild(bTable);
+
+    // Create a container for the solution
+    const solutionContainer = document.createElement('div');
+    solutionContainer.className = 'solution-container';
+    solutionContainer.style.textAlign = 'center'; // Center the solution content
+    // solutionContainer.style.marginTop = '1.5rem';
+
+    // Add a heading for the solution
+    const solutionHeading = document.createElement('h3');
+    solutionHeading.textContent = 'Solusi';
+    solutionHeading.style.marginBottom = '10px';
+    solutionContainer.appendChild(solutionHeading);
+
+    // Create the list for displaying x values
+    const solutionList = document.createElement('ul');
+    solutionList.style.display = 'flex'; // Use flexbox for side-by-side layout
+    solutionList.style.justifyContent = 'center'; // Center the list items
+    solutionList.style.gap = '10px'; // Add spacing between the items
+    solutionList.style.listStyleType = 'none'; // Remove bullet points
+    solutionList.style.padding = '0'; // Remove padding
+
+    x.forEach((value, index) => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `<span style="font-weight: bold;">x<sub>${index + 1}</sub></span> = <span style="color: red;">${formatValue(value)}</span>`;
+        solutionList.appendChild(listItem);
+    });
+
+    // Append the solution list to the solution container
+    solutionContainer.appendChild(solutionList);
+
+    // Append the tables container to the main container
+    mainContainer.appendChild(tablesContainer);
+
+    // Append the solution container below the tables
+    mainContainer.appendChild(solutionContainer);
+
+    // Append the main container to the modal box
+    modalBox.appendChild(mainContainer);
 }
 
