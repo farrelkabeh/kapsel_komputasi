@@ -4,7 +4,7 @@ function generateMatrixSystemsDecomp() {
     container.innerHTML = ''; // Clear previous system inputs
 
     if (size < 2 || size > 5 || isNaN(size)) {
-        alert('Ordo matriks harus di antara 2–5.');
+        alert('Dimension of row and column must be between 2 and 5 (inclusive).');
         return;
     }
 
@@ -108,7 +108,7 @@ function generateMatrixSystemsDecomp() {
             for (let j = 0; j < size; j++) {
                 const value = parseFloat(inputs[j].value);
                 if (isNaN(value)) {
-                    alert('Mohon masukkan entri bilangan real pada matriks A.');
+                    alert('Coefficient matrix entry must be numerical.');
                     return;
                 }
                 if (value > 9999 || value < -9999) outOfRange = true;
@@ -122,7 +122,7 @@ function generateMatrixSystemsDecomp() {
         for (let i = 0; i < size; i++) {
             const value = parseFloat(inputsB[i].value);
             if (isNaN(value)) {
-                alert('Mohon masukkan entri bilangan real pada vektor b.');
+                alert('Constant vector entry must be numerical.');
                 return;
             }
             if (value > 9999 || value < -9999) outOfRange = true;
@@ -131,7 +131,7 @@ function generateMatrixSystemsDecomp() {
 
         // Warning if any value is out of range
         if (outOfRange) {
-            alert('Nilai entri matriks atau vektor harus dalam rentang -9999 hingga 9999.');
+            alert('Coefficient matrix and constant vector entries must be between -9999 and 9999.');
             return;
         }
 
@@ -165,7 +165,7 @@ function generateMatrixSystemsDecomp() {
 
             if (math.smaller(maxValue, math.fraction(1e-10))) {
                 resultNoLUDecomp();
-                throw new TypeError("Matriks tidak dapat didekomposisi LU. Pivot terlalu kecil.");
+                throw new TypeError('Triangularization process failed. Pivot is too small.');
             }
 
             // Swap rows in U and P
@@ -303,7 +303,7 @@ function sol(A, b) {
 
 function resultYesSystems(A, b, x) {
     const headerModal = document.querySelector('.modal-box-header');
-    headerModal.innerHTML = 'Sistem Persamaan Linear';
+    headerModal.innerHTML = 'System of Linear Equations';
 
     const modalBox = document.querySelector('.modal-box-content');
     modalBox.innerHTML = ''; // Clear previous content
