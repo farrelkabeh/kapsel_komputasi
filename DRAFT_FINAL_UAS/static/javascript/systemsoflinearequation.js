@@ -4,7 +4,7 @@ function generateMatrixSystemsDecomp() {
     container.innerHTML = ''; // Clear previous system inputs
 
     if (size < 2 || size > 5 || isNaN(size)) {
-        alert('Ordo matriks harus di antara 2–5.');
+        alert('Dimension of row and column must be between 2 and 5 (inclusive).');
         return;
     }
 
@@ -92,9 +92,9 @@ function generateMatrixSystemsDecomp() {
     // Append the system table to the container
     container.appendChild(systemTable);
 
-    // Create the "Hitung" button
+    // Create the "Calculate" button
     const submitButton = document.createElement('button');
-    submitButton.innerText = 'Hitung';
+    submitButton.innerText = 'Calculate';
     submitButton.style.marginTop = '1rem';
     submitButton.onclick = function () {
         const A = [];
@@ -108,7 +108,7 @@ function generateMatrixSystemsDecomp() {
             for (let j = 0; j < size; j++) {
                 const value = parseFloat(inputs[j].value);
                 if (isNaN(value)) {
-                    alert('Mohon masukkan entri bilangan real pada matriks A.');
+                    alert('Matrix entry must be numerical.');
                     return;
                 }
                 if (value > 9999 || value < -9999) outOfRange = true;
@@ -122,7 +122,7 @@ function generateMatrixSystemsDecomp() {
         for (let i = 0; i < size; i++) {
             const value = parseFloat(inputsB[i].value);
             if (isNaN(value)) {
-                alert('Mohon masukkan entri bilangan real pada vektor b.');
+                alert('Vector entry must be numerical.');
                 return;
             }
             if (value > 9999 || value < -9999) outOfRange = true;
@@ -131,7 +131,7 @@ function generateMatrixSystemsDecomp() {
 
         // Warning if any value is out of range
         if (outOfRange) {
-            alert('Nilai entri matriks atau vektor harus dalam rentang -9999 hingga 9999.');
+            alert('Matrix entry must be between -9999 and 9999.''Nilai entri matriks atau vektor harus dalam rentang -9999 hingga 9999.');
             return;
         }
 
