@@ -92,7 +92,7 @@ function generateMatrixSystemsDecomp() {
     // Append the system table to the container
     container.appendChild(systemTable);
 
-    // Create the "Hitung" button
+    // Create the "Calculate" button
     const submitButton = document.createElement('button');
     submitButton.innerText = 'Calculate';
     submitButton.style.marginTop = '1rem';
@@ -196,8 +196,8 @@ function generateMatrixSystemsDecomp() {
         triggerModal();
         removeContent('modal-box-content');
         hideHistory();
-        resultYesSystems(math.multiply(P,A), math.multiply(P,b), x);
-        historySystems(math.multiply(P,A), math.multiply(P,b), x);
+        resultYesSystems(A, b, x);
+        historySystems(A, b, x);
     };
 
     container.appendChild(submitButton);
@@ -333,7 +333,7 @@ function resultYesSystems(A, b, x) {
     // Create table for matrix A
     const aTable = document.createElement('table');
     aTable.className = 'aTable';
-    aTable.innerHTML = '<caption>P*A</caption>';
+    aTable.innerHTML = '<caption>A</caption>';
 
     // Populate A table with values
     formatMatrix(A).forEach(row => {
@@ -349,7 +349,7 @@ function resultYesSystems(A, b, x) {
     // Create table for vector b
     const bTable = document.createElement('table');
     bTable.className = 'bTable';
-    bTable.innerHTML = '<caption>P*b</caption>';
+    bTable.innerHTML = '<caption>b</caption>';
 
     // Populate b table with values
     b.forEach(value => {
