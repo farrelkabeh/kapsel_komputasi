@@ -273,7 +273,7 @@ function SystemsDecomp() {
     titleDiv.style.paddingTop = "1rem";
 
     // Insert title
-    titleDiv.innerHTML = "System of Linear Equation Calculator";
+    titleDiv.innerHTML = "System of Linear Equations Calculator";
 
     container.appendChild(titleDiv)
 
