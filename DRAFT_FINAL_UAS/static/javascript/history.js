@@ -267,6 +267,98 @@ function historyDeterminant(A) {
     modalBox.prepend(historyTableContainer);
 }
 
+function historySystems(A, b, x) {
+    // Get the container for history tables
+    const containers = document.getElementsByClassName('history-table-container');
+    const index = containers.length;
+
+    // Remove placeholder if it exists
+    const placeholderParagraph = document.querySelector('.modal-placeholder-history');
+    if (placeholderParagraph) {
+        placeholderParagraph.remove();
+    }
+
+    // Select the modal box for history
+    const modalBox = document.querySelector('.modal-box-history');
+
+    // Create a new container for the history table
+    const historyTableContainer = document.createElement('div');
+    historyTableContainer.className = 'history-table-container';
+
+    // Add a paragraph to indicate the computation index and timestamp
+    const containerParagraph = document.createElement('p');
+    containerParagraph.className = 'container-bridge';
+    containerParagraph.style = 'color:#909090;';
+    containerParagraph.textContent = `Perhitungan ${index + 1}: (${getCurrentTimestamp()})`;
+
+    const historyTableDiv = document.createElement('div');
+    historyTableDiv.className = 'history-table';
+    historyTableDiv.style = 'display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;';
+
+    // Helper function to format matrix values for display
+    const formatValue = (value) => {
+        if (math.isFraction(value)) value = value.valueOf(); // Convert to decimal if fraction
+        if (Number.isInteger(value)) return value.toString(); // Return integers as is
+
+        return value.toFixed(3); // Fallback to decimal representation
+    };
+
+    // Function to create a table for a given matrix/vector
+    const createMatrixTable = (matrix, caption) => {
+        const table = document.createElement('table');
+        table.innerHTML = `<caption>${caption}</caption>`;
+        matrix.forEach(row => {
+            const tr = document.createElement('tr');
+            (Array.isArray(row) ? row : [row]).forEach(value => {
+                const td = document.createElement('td');
+                td.textContent = formatValue(value);
+                tr.appendChild(td);
+            });
+            table.appendChild(tr);
+        });
+        return table;
+    };
+
+    // Generate table for A
+    const aTable = createMatrixTable(A, 'A');
+
+    // Generate table for b
+    const bTable = createMatrixTable(b.map(value => [value]), 'b');
+
+    // Generate solution list for x
+    const solutionDiv = document.createElement('div');
+    solutionDiv.style = 'display: flex; flex-direction: column; align-items: center;';
+
+    const solutionTitle = document.createElement('h4');
+    solutionTitle.textContent = 'Solution';
+    solutionTitle.style.marginBottom = '1rem';
+
+    const solutionList = document.createElement('ul');
+    solutionList.style = 'list-style: none; padding: 0;';
+
+    x.forEach((value, idx) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `x${idx + 1} = ${formatValue(value)}`;
+        solutionList.appendChild(listItem);
+    });
+
+    solutionDiv.appendChild(solutionTitle);
+    solutionDiv.appendChild(solutionList);
+
+    // Add tables and solution to the history container
+    historyTableContainer.appendChild(containerParagraph); // Add the timestamp paragraph
+    historyTableContainer.appendChild(historyTableDiv); // Add the div for the history content
+    historyTableDiv.appendChild(aTable); // Add matrix A
+    historyTableDiv.appendChild(bTable); // Add vector b
+    historyTableDiv.appendChild(solutionDiv); // Add solution
+
+    historyTableDiv.style = 'overflow:auto;max-width:60vw;padding-bottom:1rem;';
+
+    // Add the new history container to the modal box
+    modalBox.prepend(historyTableContainer);
+}
+
+
 // Function to get the current timestamp (for reuse)
 function getCurrentTimestamp() {
     const now = new Date();
