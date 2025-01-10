@@ -119,7 +119,7 @@ function CholeskyDekom(A) {
     for (let k = 0; k < n; k++) {
         // Check if the diagonal element is positive
         if (A_copy[k][k] <= 0) {
-            alert(`Matrix is not positive definite. Cholesky decomposition cannot be performed. Diagonal element A[${k}][${k}] = ${A_copy[k][k]} is not positive.`);
+            alert(`Matrix is not positive definite. Cholesky decomposition cannot be performed.`);
             throw new TypeError("Matrix is not positive definite.");
         }
 
@@ -254,4 +254,3 @@ function resultYesCholeskyDecomp(L, A) {
     // Initial display
     updateMatrixDisplay();
 }
-
